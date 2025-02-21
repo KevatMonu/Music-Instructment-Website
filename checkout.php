@@ -1,69 +1,81 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "music_store");
+$conn = new mysqli("localhost", "root", "", "music_website");
 
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
 
-// Check if cart is empty
-if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+// Check if the user is logged in
+$user_id = $_SESSION['user_id'] ?? null;
+if (!$user_id) {
+    die("<p style='color:red;'>Please <a href='login.php'>log in</a> to proceed with checkout.</p>");
+}
+
+// Fetch cart items from database
+$query = "
+    SELECT c.product_id, p.name, p.price, c.quantity, c.offer_id, 
+           o.discount_type, o.discount_value
+    FROM cart c
+    JOIN products p ON c.product_id = p.product_id
+    LEFT JOIN offers o ON c.offer_id = o.offer_id
+    WHERE c.user_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$cartItems = [];
+$total_order_price = 0;
+
+while ($row = $result->fetch_assoc()) {
+    // Apply discount if applicable
+    $discount = 0;
+    if ($row['offer_id']) {
+        if ($row['discount_type'] == 'flat') {
+            $discount = $row['discount_value'];
+        } elseif ($row['discount_type'] == 'percentage') {
+            $discount = ($row['discount_value'] / 100) * $row['price'];
+        }
+    }
+
+    $final_price = $row['price'] - $discount;
+    $row['subtotal'] = $final_price * $row['quantity'];
+    $total_order_price += $row['subtotal'];
+    $cartItems[] = $row;
+}
+
+if (empty($cartItems)) {
     die("Your cart is empty. <a href='products.php'>Go Back</a>");
 }
 
 // Process Order
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $customer_name = $conn->real_escape_string($_POST['name']);  // Use 'name' (matches DB column)
-    $customer_email = $conn->real_escape_string($_POST['email']);  // Use 'email'
+    $customer_name = $conn->real_escape_string($_POST['name']);
+    $customer_email = $conn->real_escape_string($_POST['email']);
     $address = $conn->real_escape_string($_POST['address']);
     $payment_method = $conn->real_escape_string($_POST['payment_method']);
 
-    $total_order_price = 0;
-
-    // Calculate total price from cart
-    foreach ($_SESSION['cart'] as $product_id => $quantity) {
-        $query = "SELECT price FROM products WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $product_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $product = $result->fetch_assoc();
-        $stmt->close();
-
-        if ($product) {
-            $total_order_price += $product['price'] * $quantity;
-        }
-    }
-
     // Insert into orders table
-    $stmt = $conn->prepare("INSERT INTO orders (name, email, address, total_price, payment_method) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssds", $customer_name, $customer_email, $address, $total_order_price, $payment_method);
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, name, email, address, total_price, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("isssds", $user_id, $customer_name, $customer_email, $address, $total_order_price, $payment_method);
     $stmt->execute();
     $order_id = $stmt->insert_id;
     $stmt->close();
 
     // Insert into order_items table
-    foreach ($_SESSION['cart'] as $product_id => $quantity) {
-        $query = "SELECT price FROM products WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $product_id);
+    foreach ($cartItems as $item) {
+        $stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiid", $order_id, $item['product_id'], $item['quantity'], $item['subtotal']);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $product = $result->fetch_assoc();
         $stmt->close();
-
-        if ($product) {
-            $item_price = $product['price'] * $quantity;
-
-            $stmt = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("iiid", $order_id, $product_id, $quantity, $item_price);
-            $stmt->execute();
-            $stmt->close();
-        }
     }
 
     // Clear cart after successful order
-    unset($_SESSION['cart']);
+    $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
 
     // Redirect to success page
     header("Location: success.php?order_id=" . $order_id);

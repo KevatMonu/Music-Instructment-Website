@@ -1,15 +1,20 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "music_store");
+$conn = new mysqli("localhost", "root", "", "music_website");
 
+// Check Connection
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
 
-// Simulate logged-in customer (replace this with session data)
-$customer_email = "test@example.com"; // Change this to $_SESSION['email']
+// Ensure User is Logged In
+if (!isset($_SESSION['email'])) {
+    die("Access denied. Please <a href='login.php'>login</a> to view your orders.");
+}
 
-// Fetch all past orders
+$customer_email = $_SESSION['email'];
+
+// Fetch User's Orders
 $order_query = "SELECT * FROM orders WHERE email = ? ORDER BY created_at DESC";
 $stmt = $conn->prepare($order_query);
 $stmt->bind_param("s", $customer_email);
@@ -22,16 +27,19 @@ $stmt->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background: #f8f8f8; padding: 20px; }
-        .container { max-width: 700px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }
         h2 { color: #333; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
         th { background: #f4f4f4; }
-        .btn { display: inline-block; padding: 5px 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        .btn { display: inline-block; padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; transition: 0.3s; }
         .btn:hover { background: #0056b3; }
+        .empty-message { padding: 20px; background: #ffefc4; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -49,15 +57,15 @@ $stmt->close();
             </tr>
             <?php while ($order = $orders_result->fetch_assoc()): ?>
                 <tr>
-                    <td>#<?php echo $order['id']; ?></td>
+                    <td>#<?php echo htmlspecialchars($order['order_id']); ?></td>
                     <td><?php echo date("d M Y, h:i A", strtotime($order['created_at'])); ?></td>
                     <td>₹<?php echo number_format($order['total_price'], 2); ?></td>
-                    <td><a href="order_details.php?order_id=<?php echo $order['id']; ?>" class="btn">View</a></td>
+                    <td><a href="order_details.php?order_id=<?php echo htmlspecialchars($order['order_id']); ?>" class="btn">View</a></td>
                 </tr>
             <?php endwhile; ?>
         </table>
     <?php else: ?>
-        <p>No past orders found.</p>
+        <p class="empty-message">You haven't placed any orders yet.</p>
     <?php endif; ?>
 
     <a href="index.php" class="btn">Back to Home</a>

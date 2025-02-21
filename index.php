@@ -1,12 +1,15 @@
 <?php
-session_start();
+// Start session only if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Database Connection
-$conn = new mysqli("localhost", "root", "", "music_store");
-
-// Check Connection
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
+// Database Connection (Using PDO)
+try {
+    $conn = new PDO("mysql:host=localhost;dbname=music_website;charset=utf8mb4", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 
 // Initialize cart if not exists
@@ -15,25 +18,32 @@ if (!isset($_SESSION['cart'])) {
 }
 
 // Add to cart functionality
-if (isset($_GET['action']) && isset($_GET['id'])) {
+if (isset($_GET['action'], $_GET['id']) && is_numeric($_GET['id'])) {
     $id = intval($_GET['id']);
-    if ($_GET['action'] == 'add') {
-        if (!isset($_SESSION['cart'][$id])) {
-            $_SESSION['cart'][$id] = 1; // First time adding product
-        } else {
-            $_SESSION['cart'][$id]++; // Increase quantity on click
-        }
-        header("Location: products.php");
+    
+    if ($_GET['action'] === 'add') {
+        $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
+        header("Location: index.php");
         exit();
     }
 }
 
-// Fetch Products
-$sql = "SELECT * FROM products";
-$result = $conn->query($sql);
+// **Check if the 'product_id' column exists in the 'products' table**
+$query = "SHOW COLUMNS FROM products LIKE 'product_id'";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+if ($stmt->rowCount() == 0) {
+    die("Error: 'product_id' column does not exist in 'products' table.");
+}
+
+// Fetch Products (Select only necessary columns)
+$query = "SELECT product_id, name, price, rental_price, stock FROM products WHERE stock > 0";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Count total items in cart
-$totalItems = array_sum($_SESSION['cart']);
+$totalItems = array_sum($_SESSION['cart'] ?? []);
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +84,7 @@ $totalItems = array_sum($_SESSION['cart']);
             <a href="about.html"><li>About Us</li> </a>
             <a href="contact.hmtl"><li>Contact Us</li></a>
             <a href="pages/sign-in.php"><li>Login</li> </a>
+            <a href="rent.php"><li>Rent</li></a>  
           </ul>
         </div>
       </div>
@@ -648,4 +659,3 @@ $totalItems = array_sum($_SESSION['cart']);
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   </body>
 </html>
-<?php $conn->close(); ?>
