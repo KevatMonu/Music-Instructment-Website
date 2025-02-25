@@ -1,30 +1,34 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "music_website");
+include 'db_connection.php';
 
-// Check Connection
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
-}
+if (isset($_GET['action']) && $_GET['action'] == "add" && isset($_GET['id'])) {
+    $productId = $_GET['id'];
 
-// Initialize cart if not exists
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-// Add to cart functionality (AJAX)
-if (isset($_GET['action']) && isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    if ($_GET['action'] == 'add') {
-        $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
-        echo json_encode(["success" => true, "totalItems" => array_sum($_SESSION['cart'])]);
-        exit();
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
     }
+
+    if (isset($_SESSION['cart'][$productId])) {
+        $_SESSION['cart'][$productId] += 1; // Increase quantity
+    } else {
+        $_SESSION['cart'][$productId] = 1; // Add new item
+    }
+
+    $totalItems = array_sum($_SESSION['cart']);
+
+    echo json_encode(["success" => true, "totalItems" => $totalItems]);
+    exit;
 }
+
+// Fetch products from the database
+$query = "SELECT product_id, product_name, product_description, product_price, rental_cost, product_image, image_type FROM products";
+$result = $conn->query($query);
 
 // Count total items in cart
-$totalItems = array_sum($_SESSION['cart']);
+$totalItems = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,13 +36,112 @@ $totalItems = array_sum($_SESSION['cart']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/products.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <style>
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .product-card img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        .product-card h3 {
+            margin-bottom: 3px;
+            font-size: 1em;
+        }
+
+        .product-card p {
+            margin-bottom: 8px;
+        }
+
+        .product-card .add-to-cart {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.85em;
+        }
+
+        .product-card .add-to-cart:hover {
+            background-color: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        #nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px; /* Increased padding */
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            height: 80px; /* Increased height */
+        }
+
+        .nav1 {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px; /* Increased logo size */
+        }
+
+        .nav-item ul {
+            list-style: none;
+            display: flex;
+            margin-left: 20px; /* Increased margin */
+        }
+
+        .nav-item li {
+            margin-right: 15px; /* Increased margin */
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.1em; /* Increased font size */
+        }
+
+        .nav2-icon a {
+            margin-left: 15px; /* Increased margin */
+            color: #333;
+            font-size: 1.2em; /* Increased icon size */
+        }
+
+    </style>
 </head>
 <body>
 
-    <!-- Navigation Bar -->
     <div id="nav">
         <div class="nav1">
             <div class="logo">
@@ -54,96 +157,35 @@ $totalItems = array_sum($_SESSION['cart']);
             </div>
         </div>
         <div class="nav2">
-            <div class="nav2-1">
-                <input type="search" id="search-box" placeholder="Search product..." />
-            </div>
             <div class="nav2-icon">
                 <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i>(<span id="cart-count"><?php echo $totalItems; ?></span>)</a>
+                <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
             </div>
         </div>
     </div>
 
-    <!-- Product Section -->
     <h2>All Products</h2>
-    <div class="products-container">
-        <aside class="filters-sidebar">
-            <h3>Filters</h3>
-            <form id="filter-form">
-                <div class="filter-section">
-                    <h3>Categories</h3>
-                    <div class="filter-options">
-                        <?php
-                        $categories = ['guitars', 'pianos', 'drums', 'wind', 'accessories'];
-                        foreach ($categories as $category) {
-                            echo "<label>
-                                    <input type='checkbox' class='filter-checkbox' name='category[]' value='$category'>
-                                    " . ucfirst($category) . "
-                                </label>";
-                        }
-                        ?>
-                    </div>
-                </div>
-                <div class="filter-section">
-                    <h3>Price Range</h3>
-                    <input type="range" id="price-range" min="0" max="10000" step="100">
-                    <p>Up to ₹<span id="price-value">10000</span></p>
-                </div>
-                <div class="filter-section">
-                    <h3>Sort By</h3>
-                    <select id="sort-options">
-                        <option value="">Default</option>
-                        <option value="price_low">Price: Low to High</option>
-                        <option value="price_high">Price: High to Low</option>
-                    </select>
-                </div>
-            </form>
-        </aside>
-
-        <div class="product-containers" id="product-list">
-            <!-- Products will be loaded here via AJAX -->
-        </div>
+    <div class="product-container">
+        <?php while ($row = $result->fetch_assoc()): ?>
+            <div class="product-card">
+                <?php
+                if (!empty($row['product_image'])) {
+                    echo '<img src="data:' . $row['image_type'] . ';base64,' . base64_encode($row['product_image']) . '" alt="' . htmlspecialchars($row['product_name']) . '">';
+                } else {
+                    echo '<img src="assets/no-image.png" alt="No Image">';
+                }
+                ?>
+                <h3><?php echo htmlspecialchars($row['product_name']); ?></h3>
+                <p><?php echo htmlspecialchars($row['product_description']); ?></p>
+                <p>Price: ₹<?php echo number_format($row['product_price'], 2); ?></p>
+                <button class="add-to-cart" data-id="<?php echo $row['product_id']; ?>">Add to Cart</button>
+            </div>
+        <?php endwhile; ?>
     </div>
 
     <script>
-    $(document).ready(function(){
-        function fetchProducts() {
-            let selectedCategories = [];
-            $(".filter-checkbox:checked").each(function() {
-                selectedCategories.push($(this).val());
-            });
-
-            let maxPrice = $("#price-range").val();
-            let sortBy = $("#sort-options").val();
-            let searchQuery = $("#search-box").val();
-
-            $.ajax({
-                url: "fetch_products.php",
-                type: "POST",
-                data: {
-                    categories: selectedCategories,
-                    maxPrice: maxPrice,
-                    sortBy: sortBy,
-                    searchQuery: searchQuery
-                },
-                success: function(response) {
-                    $("#product-list").html(response);
-                }
-            });
-        }
-
-        // Initial Load
-        fetchProducts();
-
-        // Event Listeners for Filters
-        $(".filter-checkbox, #price-range, #sort-options, #search-box").on("input change keyup", fetchProducts);
-
-        // Update price display
-        $("#price-range").on("input", function(){
-            $("#price-value").text($(this).val());
-        });
-
-        // Add to Cart (AJAX)
-        $(document).on("click", ".add-to-cart", function(e) {
+    $(document).ready(function() {
+        $(".add-to-cart").click(function(e) {
             e.preventDefault();
             let productId = $(this).data("id");
 
@@ -159,4 +201,5 @@ $totalItems = array_sum($_SESSION['cart']);
 
 </body>
 </html>
+
 <?php $conn->close(); ?>

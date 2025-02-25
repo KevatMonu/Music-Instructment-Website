@@ -1,64 +1,51 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "music_website");
 
+// Database Connection
+$conn = new mysqli("localhost", "root", "", "musicstore_database");
 if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $message = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name']);
     $description = trim($_POST['description']);
-    $category_id = intval($_POST['category_id']);
+    $category_ref = intval($_POST['category']); // Fix: Using correct variable
     $price = floatval($_POST['price']);
-    $rental_price = floatval($_POST['rental_price']);
-    $stock = intval($_POST['stock']);
+    $image = $_FILES['image'];
 
-    // Ensure the uploads directory exists
-    $target_dir = "uploads/";
-    if (!is_dir($target_dir)) {
-        mkdir($target_dir, 0777, true);
-    }
-
-    // Image validation
-    if ($_FILES["image"]["error"] !== UPLOAD_ERR_OK) {
-        $message = "<p style='color: red;'>Image upload error: " . $_FILES["image"]["error"] . "</p>";
+    // Basic Validation
+    if (empty($name) || empty($price) || empty($category_ref) || empty($image['name'])) {
+        $message = "<p class='error-message'>All fields are required!</p>";
     } else {
-        $image_name = basename($_FILES["image"]["name"]);
-        $target_file = $target_dir . $image_name;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Allowed Image Formats
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $imageExtension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
 
-        // Allow only JPG, JPEG, PNG files
-        $allowed_types = ["jpg", "jpeg", "png"];
-        if (!in_array($imageFileType, $allowed_types)) {
-            $message = "<p style='color: red;'>Only JPG, JPEG, PNG files are allowed.</p>";
-        } elseif ($_FILES["image"]["size"] > 5000000) { // Limit 5MB
-            $message = "<p style='color: red;'>File is too large. Max size: 5MB</p>";
+        if (!in_array($imageExtension, $allowedExtensions)) {
+            $message = "<p class='error-message'>Invalid image format! Only JPG, PNG, GIF allowed.</p>";
+        } elseif ($image['size'] > 5000000) { // 5MB limit
+            $message = "<p class='error-message'>File is too large! Max size: 5MB.</p>";
         } else {
-            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                $image_path = $target_file;
+            // Read image content
+            $imageContent = file_get_contents($image['tmp_name']);
+            $imageType = $image['type'];
+            
+            // Insert Product into Database
+            $stmt = $conn->prepare("INSERT INTO products (product_name, product_description, category_ref, product_price, product_image, image_type) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssidss", $name, $description, $category_ref, $price, $imageContent, $imageType);
 
-                // Insert product data
-                $stmt = $conn->prepare("INSERT INTO products (name, description, category_id, price, rental_price, stock, image) 
-                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssiidis", $name, $description, $category_id, $price, $rental_price, $stock, $image_path);
-
-                if ($stmt->execute()) {
-                    $message = "<p style='color: green;'>Product added successfully!</p>";
-                } else {
-                    $message = "<p style='color: red;'>Error: " . $stmt->error . "</p>";
-                }
-
-                $stmt->close();
+            if ($stmt->execute()) {
+                $message = "<p class='success-message'>Product added successfully!</p>";
             } else {
-                $message = "<p style='color: red;'>Failed to upload image.</p>";
+                $message = "<p class='error-message'>Error adding product: " . $stmt->error . "</p>";
             }
+            $stmt->close();
         }
     }
 }
-
 $conn->close();
 ?>
 
@@ -68,35 +55,40 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
+    <link rel="stylesheet" href="css/add_product.css">
 </head>
 <body>
-
-<h2>Add New Product</h2>
-
-<?php echo $message; ?>
-
-<form method="POST" enctype="multipart/form-data">
-    <input type="text" name="name" placeholder="Product Name" required><br>
-    <textarea name="description" placeholder="Product Description"></textarea><br>
-    <select name="category_id" required>
-        <option value="">Select Category</option>
-        <?php
-        // Fetch categories dynamically
-        $conn = new mysqli("localhost", "root", "", "music_website");
-        $category_query = "SELECT category_id, name FROM categories";
-        $result = $conn->query($category_query);
-        while ($row = $result->fetch_assoc()) {
-            echo "<option value='{$row['category_id']}'>{$row['name']}</option>";
-        }
-        $conn->close();
-        ?>
-    </select><br>
-    <input type="number" step="0.01" name="price" placeholder="Price" required><br>
-    <input type="number" step="0.01" name="rental_price" placeholder="Rental Price" required><br>
-    <input type="number" name="stock" placeholder="Stock Quantity" required><br>
-    <input type="file" name="image" accept="image/*" required><br>
-    <button type="submit">Add Product</button>
-</form>
-
+<div class="container">
+    <h2>Add New Product</h2>
+    <?php echo $message; ?>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Product Name" required>
+        <textarea name="description" placeholder="Product Description"></textarea>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <?php
+            // Fetch categories dynamically
+            $conn = new mysqli("localhost", "root", "", "musicstore_database");
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+            $category_query = "SELECT category_id, category_name FROM categories";
+            $result = $conn->query($category_query);
+            
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='{$row['category_id']}'>{$row['category_name']}</option>"; // Fixed category_id
+                }
+            } else {
+                echo "<option value=''>Error loading categories</option>";
+            }
+            $conn->close();
+            ?>
+        </select>
+        <input type="number" step="0.01" name="price" placeholder="Price" required>
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Add Product</button>
+    </form>
+</div>
 </body>
 </html>

@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Database Connection (Using PDO)
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=music_website;charset=utf8mb4", "root", "");
+    $conn = new PDO("mysql:host=localhost;dbname=musicstore_database;charset=utf8mb4", "root", "");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
@@ -28,7 +28,7 @@ if (isset($_GET['action'], $_GET['id']) && is_numeric($_GET['id'])) {
     }
 }
 
-// **Check if the 'product_id' column exists in the 'products' table**
+// **Check if 'product_id' column exists**
 $query = "SHOW COLUMNS FROM products LIKE 'product_id'";
 $stmt = $conn->prepare($query);
 $stmt->execute();
@@ -36,8 +36,20 @@ if ($stmt->rowCount() == 0) {
     die("Error: 'product_id' column does not exist in 'products' table.");
 }
 
-// Fetch Products (Select only necessary columns)
-$query = "SELECT product_id, name, price, rental_price, stock FROM products WHERE stock > 0";
+// **Fetch Products with Category Names**
+$query = "
+    SELECT 
+        p.product_id, 
+        p.product_name, 
+        p.product_price, 
+        p.rental_cost, 
+        p.stock_quantity, 
+        p.product_image, 
+        c.category_name
+    FROM products p
+    INNER JOIN categories c ON p.category_ref = c.category_id
+    WHERE p.stock_quantity > 0
+";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -45,6 +57,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Count total items in cart
 $totalItems = array_sum($_SESSION['cart'] ?? []);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +96,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             <a href="products.php"><li>Product</li> </a>
             <a href="about.html"><li>About Us</li> </a>
             <a href="contact.hmtl"><li>Contact Us</li></a>
-            <a href="pages/sign-in.php"><li>Login</li> </a>
+            <a href="sign-in.php"><li>Login</li> </a>
             <a href="rent.php"><li>Rent</li></a>  
           </ul>
         </div>
@@ -97,7 +110,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
         <div class="nav2-icon">
           <i class="fa-regular fa-heart"></i>
           <a href="cart.php" class="cart-link"><i class="fa-solid fa-cart-shopping"></i>(<?php echo $totalItems; ?>)</a>
-          <i class="fa-solid fa-user"></i>
+          <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
         </div>
       </div>
     </div>
@@ -171,7 +184,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             <h1>Our Collections</h1>
 
           </div>
-          <div class="product-swipe">
+          <!-- <div class="product-swipe">
             <button class="swiper-button prev-btn">
               <i class="ri-arrow-left-s-line"></i>
             </button>
@@ -239,7 +252,68 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             <button class="swiper-button next-btn">
               <i class="ri-arrow-right-s-line"></i>
             </button>
-          </div>
+          </div> -->
+          <div class="product-swipe">
+    <button class="swiper-button prev-btn">
+        <i class="ri-arrow-left-s-line"></i>
+    </button>
+    <div class="product-list">
+        <?php
+        // Database connection
+        $servername = "localhost";
+        $username = "root";
+        $password = ""; // Default WAMP password is empty
+        $dbname = "musicstore_database"; // Replace with your actual database name
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Query to fetch categories
+        $sql = "SELECT category_id, category_name, category_description, category_image FROM categories";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+              $categoryImage = $row["category_image"];
+      
+              if ($categoryImage !== null) {
+                  $imageData = base64_encode($categoryImage);
+                  $imageSrc = "data:image/jpeg;base64," . $imageData;
+              } else {
+                  // Handle the case where the image is null
+                  // Either set a default image or skip the image display
+                  $imageSrc = "assets/default-image.jpg"; // Replace with your default image path
+                  // or
+                  // $imageSrc = ""; // Skip the image entirely
+              }
+      
+              echo '<div class="product-item">
+                      <div class="product-img">
+                          <img src="' . $imageSrc . '" alt="' . $row["category_name"] . '" />
+                      </div>
+                      <div class="product-text">
+                          <h1>' . $row["category_name"] . '</h1>
+                          <a href="products.php?category=' . $row["category_id"] . '"><button class="shop-btn">Shop Now</button></a>
+                      </div>
+                  </div>';
+          }
+      } else {
+          echo "No categories found";
+      }
+        
+        // Close connection
+        $conn->close();
+        ?>
+    </div>
+    <button class="swiper-button next-btn">
+        <i class="ri-arrow-right-s-line"></i>
+    </button>
+</div>
         </div>
         <div class="line"></div>
 
@@ -546,7 +620,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             skill. Explore all our collections and find the instrument that
             speaks to you at our musical instrument shop.
           </p>
-          <button>Shop Now</button>
+       <a href="products.php">   <button>Shop Now</button></a>
         </div>
         <div class="page4-right">
           <div class="right-image-one">

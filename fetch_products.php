@@ -1,60 +1,42 @@
 <?php
-session_start();
-$conn = new mysqli("localhost", "root", "", "music_website");
+require_once "db_connection.php"; 
 
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
-}
+$categoryFilter = isset($_POST['categories']) ? implode(",", array_map('intval', $_POST['categories'])) : '';
+$maxPrice = isset($_POST['maxPrice']) ? floatval($_POST['maxPrice']) : 10000;
+$sortBy = isset($_POST['sortBy']) ? $_POST['sortBy'] : '';
+$searchQuery = isset($_POST['searchQuery']) ? "%" . $_POST['searchQuery'] . "%" : "%";
 
-// Get filters
-$selectedCategories = $_POST['categories'] ?? [];
-$maxPrice = $_POST['maxPrice'] ?? 10000;
-$sortBy = $_POST['sortBy'] ?? "";
-$searchQuery = $_POST['searchQuery'] ?? "";
-
-// Build SQL query
-$sql = "SELECT * FROM products WHERE price <= $maxPrice";
-
-// Category Filter
-if (!empty($selectedCategories)) {
-    $escapedCategories = array_map(fn($cat) => $conn->real_escape_string($cat), $selectedCategories);
-    $categoryPlaceholders = "'" . implode("','", $escapedCategories) . "'";
-    $sql .= " AND category_id IN ($categoryPlaceholders)";
-}
-
-// Search Filter
-if (!empty($searchQuery)) {
-    $searchQuery = $conn->real_escape_string($searchQuery);
-    $sql .= " AND name LIKE '%$searchQuery%'";
+// SQL Query with Filters
+$query = "SELECT * FROM products WHERE product_price <= ? AND product_name LIKE ?";
+if (!empty($categoryFilter)) {
+    $query .= " AND category_ref IN ($categoryFilter)";
 }
 
 // Sorting
-switch ($sortBy) {
-    case "price_low":
-        $sql .= " ORDER BY price ASC";
-        break;
-    case "price_high":
-        $sql .= " ORDER BY price DESC";
-        break;
-    default:
-        $sql .= " ORDER BY created_at DESC";
+if ($sortBy === "price_low") {
+    $query .= " ORDER BY product_price ASC";
+} elseif ($sortBy === "price_high") {
+    $query .= " ORDER BY product_price DESC";
 }
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ds", $maxPrice, $searchQuery);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<div class='product'>
-                <img src='" . htmlspecialchars($row['image'] ?? 'assets/default.jpg') . "' alt='" . htmlspecialchars($row['name']) . "' width='200px'>
-                <h3>" . htmlspecialchars($row['name']) . "</h3>
-                <p>" . htmlspecialchars($row['description']) . "</p>
-                <p>₹" . number_format($row['price'], 2) . "</p>
-                <a href='#' class='add-to-cart' data-id='" . $row['product_id'] . "'>Add to Cart</a>
+                <img src='data:image/jpeg;base64," . base64_encode($row['product_image']) . "' alt='" . htmlspecialchars($row['product_name']) . "'>
+                <h3>" . htmlspecialchars($row['product_name']) . "</h3>
+                <p>₹" . number_format($row['product_price'], 2) . "</p>
+                <button class='add-to-cart' data-id='" . $row['product_id'] . "'>Add to Cart</button>
               </div>";
     }
 } else {
     echo "<p>No products found.</p>";
 }
 
+$stmt->close();
 $conn->close();
 ?>
