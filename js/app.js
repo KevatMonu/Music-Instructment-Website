@@ -1,70 +1,4 @@
-// page1 javaScript
-function swiper() {
-  const progressCircle = document.querySelector(".autoplay-progress svg");
-  const progressContent = document.querySelector(".autoplay-progress span");
-  var swiper = new Swiper(".mySwiper", {
-    spaceBetween: 30,
-    centeredSlides: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-      Infinity,
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    on: {
-      autoplayTimeLeft(s, time, progress) {
-        progressCircle.style.setProperty("--progress", 1 - progress);
-        progressContent.textContent = `${Math.ceil(time / 1000)}s`;
-      },
-    },
-  });
-}
 
-function dropdown() {
-  let cat = document.querySelector("#cat-item");
-  let down = document.querySelector(".categories-list");
-  let rot = document.querySelector("#arrrow");
-
-  cat.addEventListener("mouseenter", function () {
-    gsap.to(down, {
-      opacity: 1,
-      pointerEvents: "auto",
-      visibility: "visible",
-      duration: 0.4,
-      zIndex: 99,
-      ease: "power1.out",
-    });
-
-    gsap.to(rot, {
-      rotate: 180,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  });
-
-  cat.addEventListener("mouseleave", function () {
-    gsap.to(down, {
-      opacity: 0,
-      pointerEvents: "none",
-      visibility: "hidden",
-      duration: 0.4,
-      ease: "power1.in",
-    });
-
-    gsap.to(rot, {
-      rotate: 0,
-      duration: 0.3,
-      ease: "power2.in",
-    });
-  });
-}
 
 function down() {
   let support = document.querySelector("#Support");
@@ -328,9 +262,7 @@ productroll();
 uptext();
 selliconup();
 productswiper();
-swiper();
 down();
-dropdown();
 downlast();
 updateCountdown();
 

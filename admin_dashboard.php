@@ -1,19 +1,16 @@
 <?php
 session_start();
-
-// Check if the user is logged in and is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     echo "<script>alert('Unauthorized access!'); window.location.href='sign-in.php';</script>";
     exit();
 }
 
-$conn = new mysqli("localhost", "root", "", "musicstore_database");
-
+$conn = new mysqli("localhost", "root", "", "musicstore_database", 3306);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$full_name = $_SESSION['full_name'];
+$full_name = htmlspecialchars($_SESSION['full_name']);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +23,7 @@ $full_name = $_SESSION['full_name'];
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: #f4f4f4;
             margin: 0;
             padding: 0;
         }

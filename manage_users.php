@@ -16,8 +16,6 @@ if ($conn->connect_error) {
 // Fetch all users
 $sql = "SELECT * FROM users ORDER BY created_on DESC";
 $result = $conn->query($sql);
-
-$full_name = $_SESSION['full_name'];
 ?>
 
 <!DOCTYPE html>
@@ -26,9 +24,7 @@ $full_name = $_SESSION['full_name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        /* (The styles from manage_categories.php are kept here) */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -45,10 +41,6 @@ $full_name = $_SESSION['full_name'];
             color: white;
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 20px;
         }
         .sidebar ul {
             list-style: none;
@@ -72,38 +64,11 @@ $full_name = $_SESSION['full_name'];
             flex: 1;
             padding: 20px;
         }
-        .logout-btn {
-            margin-top: 20px;
-            background: red;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px;
-        }
-        .logout-btn a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .logout-btn a:hover {
-            opacity: 0.8;
-        }
-        .add-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        .add-btn:hover {
-            background-color: #45a049;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background: white;
         }
         th, td {
             padding: 12px 15px;
@@ -118,12 +83,12 @@ $full_name = $_SESSION['full_name'];
             background-color: #f5f5f5;
         }
         .user-img {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             object-fit: cover;
             border-radius: 5px;
         }
-        .action-btn {
+        .action-btn, .delete-btn, .bulk-btn {
             background-color: #007bff;
             color: white;
             padding: 6px 10px;
@@ -135,24 +100,42 @@ $full_name = $_SESSION['full_name'];
         .delete-btn {
             background-color: #dc3545;
         }
+        .bulk-btn {
+            background-color: #ff5733;
+            display: none;
+        }
         .role-filter {
             margin-bottom: 10px;
         }
     </style>
     <script>
-        function filterUsers() {
-            var role = document.getElementById('roleFilter').value;
-            var rows = document.querySelectorAll('tbody tr');
-
-            rows.forEach(function(row) {
-                var userRole = row.querySelector('td:nth-child(4)').textContent; // Get role from 4th column
-                if (role === 'all' || role === userRole) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+        function toggleAll(source) {
+            var checkboxes = document.querySelectorAll('.userCheckbox');
+            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+            toggleBulkDeleteBtn();
         }
+
+        function toggleBulkDeleteBtn() {
+            var checkboxes = document.querySelectorAll('.userCheckbox:checked');
+            document.getElementById('bulkDeleteBtn').style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+        }
+
+        function confirmBulkDelete() {
+            var checkboxes = document.querySelectorAll('.userCheckbox:checked');
+            if (checkboxes.length === 0) {
+                alert("No users selected for deletion!");
+                return;
+            }
+            if (confirm("Are you sure you want to delete the selected users?")) {
+                document.getElementById('bulkDeleteForm').submit();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.userCheckbox').forEach(checkbox => {
+                checkbox.addEventListener('change', toggleBulkDeleteBtn);
+            });
+        });
     </script>
 </head>
 <body>
@@ -168,71 +151,59 @@ $full_name = $_SESSION['full_name'];
             <li><a href="manage_orders.php">View Orders</a></li>
             <li><a href="reports.php">Reports</a></li>
         </ul>
-        <div class="logout-btn">
-            <a href="logout.php">Logout</a>
+        <div>
+            <a href="logout.php" class="delete-btn">Logout</a>
         </div>
     </div>
 
     <div class="main-content">
         <h1>Manage Users</h1>
 
-        <div class="role-filter">
-            <label for="roleFilter">Filter by Role:</label>
-            <select id="roleFilter" onchange="filterUsers()">
-                <option value="all">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-            </select>
-        </div>
+        <form id="bulkDeleteForm" action="bulk_delete.php" method="POST">
+            <button type="button" id="bulkDeleteBtn" class="bulk-btn" onclick="confirmBulkDelete()">Delete Selected</button>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Image</th>
-                    <th>Created On</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["user_id"] . "</td>";
-                        echo "<td>" . $row["full_name"] . "</td>";
-                        echo "<td>" . $row["email_address"] . "</td>";
-                        echo "<td>" . $row["user_role"] . "</td>";
-                        echo "<td>";
-                        if(!empty($row["user_image"])) {
-                            $image_data = $row["user_image"];
-                            $finfo = new finfo(FILEINFO_MIME_TYPE);
-                            $mime_type = $finfo->buffer($image_data);
-                            $base64 = base64_encode($image_data);
-                            echo "<img src='data:$mime_type;base64,$base64' alt='" . $row["full_name"] . "' class='user-img'>";
-                        } else {
-                            echo "No image";
-                        }
-                        echo "</td>";
-                        echo "<td>" . $row["created_on"] . "</td>";
-                        echo "<td>
-                                    <a href='edit_user.php?id=" . $row["user_id"] . "'><button class='action-btn'>Edit</button></a>
-                                    <a href='delete_user.php?id=" . $row["user_id"] . "' onclick='return confirm(\"Are you sure you want to delete this user?\")'><button class='action-btn delete-btn'>Delete</button></a>
-                                </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7' style='text-align:center'>No users found</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll" onclick="toggleAll(this)"></th>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Image</th>
+                        <th>Created On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                        <tr>
+                            <td><input type='checkbox' class='userCheckbox' name='selected_users[]' value='<?= $row["user_id"] ?>'></td>
+                            <td><?= $row["user_id"] ?></td>
+                            <td><?= $row["full_name"] ?></td>
+                            <td><?= $row["email_address"] ?></td>
+                            <td><?= $row["user_role"] ?></td>
+                            <td>
+                                <?php if (!empty($row["user_image"])) { ?>
+                                    <img src='uploads/<?= $row["user_image"] ?>' class='user-img'>
+                                <?php } else { echo "No image"; } ?>
+                            </td>
+                            <td><?= $row["created_on"] ?></td>
+                            <td>
+                                <a href='edit_user.php?id=<?= $row["user_id"] ?>'><button type="button" class='action-btn'>Edit</button></a>
+                                <a href='delete_user.php?id=<?= $row["user_id"] ?>' onclick='return confirm("Delete this user?")'>
+                                    <button type="button" class='delete-btn'>Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </form>
     </div>
 </div>
 
 </body>
 </html>
+
 <?php $conn->close(); ?>

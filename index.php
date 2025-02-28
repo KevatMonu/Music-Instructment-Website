@@ -133,46 +133,6 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
                   </div>
                 </div>
               </div>
-              <div class="swiper-slide slide2">
-                <div class="swipe-content slide2-con">
-                  <div class="slide2-text">
-                    <h3>music makes you fly</h3>
-                    <h1>
-                      best <br />
-                      Instrument <br />
-                      store
-                    </h1>
-                    <h5>Your Sound , Our Passion</h5>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide slide3">
-                <div class="swipe-content slide3-con">
-                  <div class="img-con">
-                    <img
-                      src="assets/home/image/ksck_vhac_141113-removebg.png"
-                      alt=""
-                    />
-                  </div>
-                  <div class="slide3-text">
-                    <h3>music makes you fly</h3>
-                    <h1>
-                      Where music <br />
-                      comes to <br />
-                      life
-                    </h1>
-                    <h5>Explore a World of Sound and Rhythm</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="swiper-pagination"></div>
-            <div class="autoplay-progress">
-              <svg viewBox="0 0 48 48">
-                <circle cx="24" cy="24" r="20"></circle>
-              </svg>
-              <span></span>
             </div>
           </div>
         </div>
