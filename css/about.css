@@ -59,7 +59,7 @@ p {
 
 /* Layout structure */
 section {
-  padding: 5rem 10%;
+  padding: 2.5vw 10%;
 }
 
 .about-us-container {
@@ -69,8 +69,8 @@ section {
 
 /* Hero section */
 .hero-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/music-bg.jpg');
-  background-size: cover;
+  background-image: url(../assets/home/image/about_bg.jpeg);
+  background-size: contain;
   background-position: center;
   color: white;
   text-align: center;
@@ -87,6 +87,8 @@ section {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5vw;
 }
 
 .story-content {
@@ -102,23 +104,57 @@ section {
 }
 
 /* Values section */
+
 .values-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
+  perspective: 1000px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5vw;
 }
 
 .value-card {
   background: white;
-  padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition:  transform 1.5s;
+  cursor: pointer;
+}
+
+.value-card:hover{
+  background: rgb(238,174,202);
+  background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(189,162,219,1) 54%, rgba(148,151,233,1) 100%);
+}
+
+.value-card-front,
+.value-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.value-card-front {
+  transform: rotateY(0deg);
+}
+
+.value-card-back {
+  transform: rotateY(180deg);
 }
 
 .value-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: rotateY(180deg);
 }
 
 .value-card i {
@@ -127,43 +163,74 @@ section {
   margin-bottom: 1rem;
 }
 
+.value-card-back p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
 /* Team section */
 .team-members {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
+  perspective: 1000px;
 }
 
 .team-member {
+  background: transparent;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.5s;
+  cursor: pointer;
+}
+
+.team-member-front,
+.team-member-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
   background: white;
   border-radius: 8px;
-  overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
+}
+
+.team-member-front img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.team-member-front {
+  transform: rotateY(0deg);
+}
+
+.team-member-back {
+  transform: rotateY(180deg);
+  color:  #333;
 }
 
 .team-member:hover {
-  transform: translateY(-5px);
+  transform: rotateY(180deg);
 }
 
-.team-member img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
+.team-member-back .contact-info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
 }
 
-.team-member h3, 
-.team-member p {
-  padding: 0 1.5rem;
-}
-
-.team-member .position {
-  color: #e63946;
-  font-weight: 500;
-}
-
-.team-member .bio {
-  padding-bottom: 1.5rem;
+.team-member-back .contact-info p {
+  margin: 0.5rem 0;
 }
 
 /* Store info section */
@@ -171,6 +238,8 @@ section {
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5vw;
 }
 
 .map {
@@ -188,6 +257,14 @@ section {
   margin-top: 0.5rem;
 }
 
+.map-link a{
+  color: #e63946;
+  text-decoration: none;
+}
+.map-link a:hover{
+  color:royalblue;
+  text-decoration: underline;
+}
 .contact-info {
   background: white;
   padding: 2rem;

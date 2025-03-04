@@ -1,240 +1,135 @@
+<section class="our-team">
+  <h2>Meet Our Team</h2>
+  <div class="team-members">
+      <div class="team-member">
+          <div class="team-member-front">
+              <img src="assets/home/image/arjun.jpeg" alt="Arjun Bodhan" />
+              <h3>Arjun Bodhan</h3>
+              <p class="position">Store Manager</p>
+          </div>
+          <div class="team-member-back">
+              <h3>Arjun Bodhan</h3>
+              <p class="bio">Arjun has been surrounded by music his entire life. With expertise in brass and woodwind instruments, he leads our team with passion and dedication.</p>
+              <div class="contact-info">
+                  <p>Email: arjun@kpmusic.com</p>
+                  <p>Specialties: Brass & Woodwind</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="team-member">
+          <div class="team-member-front">
+              <img src="assets/home/image/gaurav.jpeg" alt="Gaurav Wadkar" />
+              <h3>Gaurav Wadkar</h3>
+              <p class="position">String Specialist</p>
+          </div>
+          <div class="team-member-back">
+              <h3>Gaurav Wadkar</h3>
+              <p class="bio">A classically trained violinist with over 15 years of performance experience, Gaurav helps customers find their perfect string instrument, from beginner violins to professional cellos.</p>
+              <div class="contact-info">
+                  <p>Email: gaurav@kpmusic.com</p>
+                  <p>Specialties: Violins, Cellos</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="team-member">
+          <div class="team-member-front">
+              <img src="assets/home/image/Sahil.jpeg" alt="Sahil Kondalkar" />
+              <h3>Sahil Kondalkar</h3>
+              <p class="position">Guitar Expert</p>
+          </div>
+          <div class="team-member-back">
+              <h3>Sahil Kondalkar</h3>
+              <p class="bio">With deep knowledge of electric and acoustic guitars, Sahil has been helping guitarists find their sound at K&P Music for over a decade.</p>
+              <div class="contact-info">
+                  <p>Email: sahil@kpmusic.com</p>
+                  <p>Specialties: Electric & Acoustic Guitars</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="team-member">
+          <div class="team-member-front">
+              <img src="assets/home/image/pravin.jpeg" alt="Parvin Pawar" />
+              <h3>Parvin Pawar</h3>
+              <p class="position">Music Education Director</p>
+          </div>
+          <div class="team-member-back">
+              <h3>Parvin Pawar</h3>
+              <p class="bio">Parvin coordinates our lesson programs and workshops, bringing her experience as a music educator to help students of all ages discover the joy of making music.</p>
+              <div class="contact-info">
+                  <p>Email: parvin@kpmusic.com</p>
+                  <p>Specialties: Music Education</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
 <style>
-    .search-container {
-      margin: 20px 0;
-      display: flex;
-      justify-content: center;
-      width: 100%;
-    }
-    .search-form {
-      display: flex;
-      width: 100%;
-      max-width: 600px;
-    }
-    .search-input {
-      flex: 1;
-      padding: 10px 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px 0 0 4px;
-      font-size: 16px;
-    }
-    .search-button {
-      padding: 10px 20px;
-      background-color: #4f46e5;
-      color: white;
-      border: none;
-      border-radius: 0 4px 4px 0;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .search-button:hover {
-      background-color: #4338ca;
-    }
-    .clear-search {
-      display: inline-block;
-      margin-left: 10px;
-      color: #4f46e5;
-      text-decoration: none;
-      line-height: 38px;
-    }
-    .clear-search:hover {
-      text-decoration: underline;
-    }
-    
-    /* Layout styles */
-    .product-container {
-      display: flex;
-      margin-top: 20px;
-    }
-    
-    .filter-sidebar {
-      width: 260px;
-      min-width: 260px;
-      padding: 20px;
-      background-color: #f9fafb;
-      border-radius: 8px;
-      margin-right: 30px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    .product-content {
-      flex: 1;
-    }
-    
-    /* Filter styles */
-    .filter-section {
-      margin-bottom: 25px;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 15px;
-    }
-    
-    .filter-section:last-child {
-      border-bottom: none;
-    }
-    
-    .filter-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #111827;
-    }
-    
-    .filter-option {
-      margin-bottom: 10px;
-    }
-    
-    .filter-option label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-    
-    .filter-option input[type="radio"],
-    .filter-option input[type="checkbox"] {
-      margin-right: 10px;
-    }
-    
-    .price-range {
-      padding: 10px 0;
-    }
-    
-    .price-inputs {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-    }
-    
-    .price-input {
-      width: 45%;
-    }
-    
-    .price-input input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    
-    .filter-apply {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #4f46e5;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      margin-top: 15px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.3s;
-    }
-    
-    .filter-apply:hover {
-      background-color: #4338ca;
-    }
-    
-    .active-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .filter-tag {
-      display: inline-flex;
-      align-items: center;
-      background-color: #e0e7ff;
-      color: #4f46e5;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    
-    .filter-tag i {
-      margin-left: 5px;
-      cursor: pointer;
-    }
-    
-    .filter-clear {
-      color: #4f46e5;
-      text-decoration: underline;
-      cursor: pointer;
-      margin-left: auto;
-    }
-    
-    .noUi-connect {
-      background: #4f46e5;
-    }
-    
-    /* Mobile styles */
-    @media (max-width: 768px) {
-      .product-container {
-          flex-direction: column;
-      }
-      
-      .filter-sidebar {
-          width: 100%;
-          margin-right: 0;
-          margin-bottom: 20px;
-          order: 2;
-      }
-      
-      .product-content {
-          order: 1;
-      }
-      
-      .filter-toggle {
-          display: block;
-          width: 100%;
-          padding: 10px;
-          background-color: #4f46e5;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          margin-bottom: 20px;
-          text-align: center;
-          cursor: pointer;
-      }
-      
-      .mobile-hidden {
-          display: none;
-      }
-    }
-    
-    
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    
-    .product-card {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-    
-    .product-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .result-count {
-      font-size: 16px;
-      color: #4b5563;
-    }
-    
-    .no-results {
-      text-align: center;
-      padding: 40px 0;
-      color: #6b7280;
-    }
-       </style>
+.team-members {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  perspective: 1000px;
+}
+
+.team-member {
+  background: transparent;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.5s;
+  cursor: pointer;
+}
+
+.team-member-front,
+.team-member-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.team-member-front img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.team-member-front {
+  transform: rotateY(0deg);
+}
+
+.team-member-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: white;
+}
+
+.team-member:hover {
+  transform: rotateY(180deg);
+}
+
+.team-member-back .contact-info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.team-member-back .contact-info p {
+  margin: 0.5rem 0;
+}
+</style>

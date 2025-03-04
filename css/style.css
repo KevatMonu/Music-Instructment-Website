@@ -1013,7 +1013,7 @@ width: 100%;
  }
 .foot-bottom-items input {
   width: 20vw;
-  padding: 0.5vw 1vw;
+  padding: 1vw 1vw;
   border: 1px solid #000;
   border-radius: 0.5vw;
 }
@@ -1026,7 +1026,7 @@ width: 100%;
 
 .foot-bottom-items button {
   font-size: 1vw;
-  padding: .55vw 1vw;
+  padding: 1vw 1vw;
   font-weight: 600;
   text-transform: uppercase;
   background: #FFF;
