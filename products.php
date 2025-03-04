@@ -176,8 +176,8 @@ $productCount = $result->num_rows;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Store - Products</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="./css/product.css">
+    <link rel="stylesheet" href="./css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
@@ -193,16 +193,16 @@ $productCount = $result->num_rows;
       </div>
       <div class="nav-item">
         <ul id="nav-item">
-          <a href="#index.hmtl">
+          <a href="index.php">
             <li>Home</li>
           </a>
           <a href="products.php">
             <li>Product</li>
           </a>
-          <a href="about.html">
+          <a href="about.php">
             <li>About Us</li>
           </a>
-          <a href="contact.hmtl">
+          <a href="contact.php">
             <li>Contact Us</li>
           </a>
           <a href="sign-in.php">
@@ -215,6 +215,24 @@ $productCount = $result->num_rows;
       </div>
     </div>
     <div class="nav2">
+    <div class="search-container">
+                <form method="GET" action="products.php" class="search-form" id="search-form">
+                    <input type="text" name="search" class="search-input" placeholder="Search products..." value="<?php echo htmlspecialchars($searchQuery); ?>">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <!-- Hidden inputs to preserve filter state when searching -->
+                    <input type="hidden" name="category" value="<?php echo htmlspecialchars($selectedCategory); ?>">
+                    <input type="hidden" name="min_price" value="<?php echo htmlspecialchars($minPriceFilter); ?>">
+                    <input type="hidden" name="max_price" value="<?php echo htmlspecialchars($maxPriceFilter); ?>">
+                    <input type="hidden" name="availability" value="<?php echo htmlspecialchars($selectedAvailability); ?>">
+                    <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sortOption); ?>">
+                </form>
+                <?php if (!empty($searchQuery)): ?>
+                    <a href="products.php" class="clear-search">Clear</a>
+                <?php endif; ?>
+            </div>
       <div class="nav2-icon">
         <i class="fa-regular fa-heart"></i>
         <a href="cart.php" class="cart-link">
@@ -229,27 +247,8 @@ $productCount = $result->num_rows;
   </div>
     <!-- Main Content -->
     <div class="main-content">
+   
         <div class="container">
-            <!-- Add search form -->
-            <div class="search-container">
-                <form method="GET" action="products.php" class="search-form" id="search-form">
-                    <input type="text" name="search" class="search-input" placeholder="Search products..." value="<?php echo htmlspecialchars($searchQuery); ?>">
-                    <button type="submit" class="search-button">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                    
-                    <!-- Hidden inputs to preserve filter state when searching -->
-                    <input type="hidden" name="category" value="<?php echo htmlspecialchars($selectedCategory); ?>">
-                    <input type="hidden" name="min_price" value="<?php echo htmlspecialchars($minPriceFilter); ?>">
-                    <input type="hidden" name="max_price" value="<?php echo htmlspecialchars($maxPriceFilter); ?>">
-                    <input type="hidden" name="availability" value="<?php echo htmlspecialchars($selectedAvailability); ?>">
-                    <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sortOption); ?>">
-                </form>
-                <?php if (!empty($searchQuery)): ?>
-                    <a href="products.php" class="clear-search">Clear</a>
-                <?php endif; ?>
-            </div>
-
             <div class="product-container">
                 <!-- Filter Sidebar Toggle for Mobile -->
                 <button class="filter-toggle" id="filter-toggle">
@@ -358,7 +357,9 @@ $productCount = $result->num_rows;
                 </div>
 
                 <!-- Product Content Area -->
-                <div class="product-content">
+                
+            </div>
+            <div class="product-content">
                     <?php if (!empty($searchQuery) || !empty($selectedCategory) || !empty($selectedAvailability) || $minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice || !empty($sortOption)): ?>
                     <div class="active-filters">
                         <?php if (!empty($searchQuery)): ?>
@@ -384,7 +385,7 @@ $productCount = $result->num_rows;
                         
                         <?php if ($minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice): ?>
                             <div class="filter-tag">
-                                Price: $<?php echo $minPriceFilter; ?> - $<?php echo $maxPriceFilter; ?>
+                                Price: ₹<?php echo $minPriceFilter; ?> - $<?php echo $maxPriceFilter; ?>
                                 <a href="<?php echo removeQueryParam(['min_price', 'max_price']); ?>"><i class="fas fa-times"></i></a>
                             </div>
                         <?php endif; ?>
@@ -436,9 +437,9 @@ $productCount = $result->num_rows;
                                         </h3>
                                         <p class="product-category"><?php echo htmlspecialchars($product['category_name']); ?></p>
                                         <div class="product-price">
-                                            <span class="price">$<?php echo number_format($product['product_price'], 2); ?></span>
+                                            <span class="price">₹<?php echo number_format($product['product_price'], 2); ?></span>
                                             <?php if ($product['rental_cost']): ?>
-                                                <span class="rental-price">Rental: $<?php echo number_format($product['rental_cost'], 2); ?>/day</span>
+                                                <span class="rental-price">Rental: ₹<?php echo number_format($product['rental_cost'], 2); ?>/day</span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="product-actions">
@@ -464,12 +465,11 @@ $productCount = $result->num_rows;
                         </div>
                     <?php endif; ?>
                 </div>
-            </div>
         </div>
     </div>
     
     <!-- Footer: Keep your existing footer -->
-    
+    <?php include 'pages/footer.php'; ?>
     <script>
     $(document).ready(function() {
         // Initialize price slider

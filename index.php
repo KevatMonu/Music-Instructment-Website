@@ -95,16 +95,16 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
       </div>
       <div class="nav-item">
         <ul id="nav-item">
-          <a href="#index.hmtl">
+          <a href="index.php">
             <li>Home</li>
           </a>
           <a href="products.php">
             <li>Product</li>
           </a>
-          <a href="about.html">
+          <a href="about.php">
             <li>About Us</li>
           </a>
-          <a href="contact.hmtl">
+          <a href="contact.php">
             <li>Contact Us</li>
           </a>
           <a href="sign-in.php">
@@ -119,7 +119,12 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
     <div class="nav2">
       <div class="nav2-icon">
         <i class="fa-regular fa-heart"></i>
-        <a href="cart.php" class="cart-link"><i class="fa-solid fa-cart-shopping"></i>(<?php echo $totalItems; ?>)</a>
+        <a href="cart.php" class="cart-link">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <?php if ($totalItems > 0): ?>
+                <span class="cart-count"><?php echo $totalItems; ?></span>
+            <?php endif; ?>
+        </a>
         <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
       </div>
     </div>

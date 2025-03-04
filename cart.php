@@ -90,7 +90,8 @@ $totalItems = array_sum($_SESSION['cart']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - TechShop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/cart.css">
     <style>
         /* Cart Specific Styles */
         .cart-container {
@@ -343,24 +344,24 @@ $totalItems = array_sum($_SESSION['cart']);
         </div>
         <div class="nav-item">
           <ul id="nav-item">
-            <a href="#index.hmtl"><li>Home</li> </a>
+            <a href="index.php"><li>Home</li> </a>
             <a href="products.php"><li>Product</li> </a>
-            <a href="about.html"><li>About Us</li> </a>
-            <a href="contact.hmtl"><li>Contact Us</li></a>
+            <a href="about.php"><li>About Us</li> </a>
+            <a href="contact.php"><li>Contact Us</li></a>
             <a href="sign-in.php"><li>Login</li> </a>
             <a href="rent.php"><li>Rent</li></a>  
           </ul>
         </div>
       </div>
       <div class="nav2">
-        <div class="nav2-1">
-          <input type="search" placeholder="Search product..." />
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-
         <div class="nav2-icon">
           <i class="fa-regular fa-heart"></i>
-          <a href="cart.php" class="cart-link"><i class="fa-solid fa-cart-shopping"></i>(<?php echo $totalItems; ?>)</a>
+          <a href="cart.php" class="cart-link">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <?php if ($totalItems > 0): ?>
+                <span class="cart-count"><?php echo $totalItems; ?></span>
+            <?php endif; ?>
+        </a>
           <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
         </div>
       </div>
@@ -446,7 +447,7 @@ $totalItems = array_sum($_SESSION['cart']);
         </div>
     </div>
 
-    
+    <?php include 'pages/footer.php'; ?>
    
 </body>
 </html>
