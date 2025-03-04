@@ -429,8 +429,8 @@ $totalItems = array_sum($_SESSION['cart']);
                     </div>
                 </div>
                 
-                <div style="margin-top: 20px;">
-                    <a href="products.php" class="continue-shopping">
+                <div class="continue-shopping">
+                    <a href="products.php" >
                         <i class="fas fa-arrow-left"></i> Continue Shopping
                     </a>
                 </div>

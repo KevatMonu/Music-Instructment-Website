@@ -1,9 +1,19 @@
+@font-face {
+  font-family: "Bold";
+  src: url(../assets/font/Bebas_Neue/BebasNeue-Regular.ttf);
+}
+
+@font-face {
+  font-family: "font";
+  src: url(../assets/font/Roboto_Condensed/RobotoCondensed-Regular.ttf);
+}
+
 /* General Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'font';
 }
 
 /* Body Styling */
@@ -174,7 +184,9 @@ td img {
   display: flex;
   align-items: center;
 }
-
+.cart-quantity-control a{
+  text-decoration: none;
+}
 .cart-quantity-btn {
   width: 30px;
   height: 30px;
@@ -536,6 +548,28 @@ td img {
             margin-bottom: 20px;
         }
         
+
+        .continue-shopping{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          background-color: #4f46e5;
+          margin: 0 17vw;
+          border-radius: 5vw;
+        }
+        .continue-shopping:hover{
+          background-color: #4338ca;
+        }
+
+        .continue-shopping a{
+          text-decoration: none;
+          font-size: 1.5vw;
+          color: #fff;
+          font-weight: 600;
+          transition: all 0.2s;
+          padding: .8vw 0   ;
+        }
         @media (max-width: 768px) {
             .cart-header {
                 display: none;
