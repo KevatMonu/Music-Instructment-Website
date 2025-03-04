@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message = "<p class='error-message'>All fields are required!</p>";
     } else {
         // Allowed Image Formats
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp','svg',];
         $imageExtension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
 
         if (!in_array($imageExtension, $allowedExtensions)) {
-            $message = "<p class='error-message'>Invalid image format! Only JPG, PNG, GIF allowed.</p>";
+            $message = "<p class='error-message'>Invalid image format! Only JPG, PNG, GIF,WEBP,SVG allowed.</p>";
         } elseif ($image['size'] > 5000000) { // 5MB limit
             $message = "<p class='error-message'>File is too large! Max size: 5MB.</p>";
         } else {
