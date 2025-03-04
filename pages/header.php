@@ -68,6 +68,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
   <title>K&P Music Instrument Store</title>
   <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="./css/product.css">
+  <link rel="stylesheet" href="./css/about.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link
@@ -121,7 +122,12 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
     <div class="nav2">
       <div class="nav2-icon">
         <i class="fa-regular fa-heart"></i>
-        <a href="cart.php" class="cart-link"><i class="fa-solid fa-cart-shopping"></i>(<?php echo $totalItems; ?>)</a>
+        <a href="cart.php" class="cart-link">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <?php if ($totalItems > 0): ?>
+                <span class="cart-count"><?php echo $totalItems; ?></span>
+            <?php endif; ?>
+        </a>
         <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
       </div>
     </div>

@@ -45,7 +45,7 @@
         </div>
 
         <div class="foot-bottom-items">
-          <h1>Newsletter</h1>
+          <h1 class="newsletter">Newsletter</h1>
           <p>
             Subscribe to our newsletter and get 10% off your first purchase
           </p>

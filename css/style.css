@@ -1003,7 +1003,14 @@ width: 100%;
   margin: 1vw 0;
 }
 
-
+ .newsletter{
+  font-size: 1.5vw;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #000;
+  margin: 1vw 0;
+  font-family: 'font';
+ }
 .foot-bottom-items input {
   width: 20vw;
   padding: 0.5vw 1vw;
