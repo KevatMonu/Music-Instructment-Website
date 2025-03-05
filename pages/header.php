@@ -69,6 +69,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
   <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="./css/product.css">
   <link rel="stylesheet" href="./css/about.css"/>
+  <link rel="stylesheet" href="./css/sign-in-up.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link
@@ -98,20 +99,20 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
       </div>
       <div class="nav-item">
         <ul id="nav-item">
-          <a href="#index.hmtl">
+          <a href="index.php">
             <li>Home</li>
           </a>
           <a href="products.php">
             <li>Product</li>
           </a>
-          <a href="about.html">
+          <a href="about.php">
             <li>About Us</li>
           </a>
-          <a href="contact.hmtl">
+          <a href="contact.php">
             <li>Contact Us</li>
           </a>
           <a href="sign-in.php">
-            <li>Login</li>
+            <li>Sign In</li>
           </a>
           <a href="rent.php">
             <li>Rent</li>

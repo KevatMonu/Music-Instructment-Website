@@ -107,7 +107,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             <li>Contact Us</li>
           </a>
           <a href="sign-in.php">
-            <li>Login</li>
+            <li>Sign In</li>
           </a>
           <a href="rent.php">
             <li>Rent</li>

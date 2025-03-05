@@ -1,135 +1,168 @@
-<section class="our-team">
-  <h2>Meet Our Team</h2>
-  <div class="team-members">
-      <div class="team-member">
-          <div class="team-member-front">
-              <img src="assets/home/image/arjun.jpeg" alt="Arjun Bodhan" />
-              <h3>Arjun Bodhan</h3>
-              <p class="position">Store Manager</p>
-          </div>
-          <div class="team-member-back">
-              <h3>Arjun Bodhan</h3>
-              <p class="bio">Arjun has been surrounded by music his entire life. With expertise in brass and woodwind instruments, he leads our team with passion and dedication.</p>
-              <div class="contact-info">
-                  <p>Email: arjun@kpmusic.com</p>
-                  <p>Specialties: Brass & Woodwind</p>
-              </div>
-          </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Store - Sign In</title>
+    <style>
+        @font-face {
+            font-family: "Bold";
+            src: url(../assets/font/Bebas_Neue/BebasNeue-Regular.ttf);
+        }
+        
+        @font-face {
+            font-family: "font";
+            src: url(../assets/font/Roboto_Condensed/RobotoCondensed-Regular.ttf);
+        }
 
-      <div class="team-member">
-          <div class="team-member-front">
-              <img src="assets/home/image/gaurav.jpeg" alt="Gaurav Wadkar" />
-              <h3>Gaurav Wadkar</h3>
-              <p class="position">String Specialist</p>
-          </div>
-          <div class="team-member-back">
-              <h3>Gaurav Wadkar</h3>
-              <p class="bio">A classically trained violinist with over 15 years of performance experience, Gaurav helps customers find their perfect string instrument, from beginner violins to professional cellos.</p>
-              <div class="contact-info">
-                  <p>Email: gaurav@kpmusic.com</p>
-                  <p>Specialties: Violins, Cellos</p>
-              </div>
-          </div>
-      </div>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "font";
+            box-sizing: border-box;
+        }
+        
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            will-change: auto;
+        }
 
-      <div class="team-member">
-          <div class="team-member-front">
-              <img src="assets/home/image/Sahil.jpeg" alt="Sahil Kondalkar" />
-              <h3>Sahil Kondalkar</h3>
-              <p class="position">Guitar Expert</p>
-          </div>
-          <div class="team-member-back">
-              <h3>Sahil Kondalkar</h3>
-              <p class="bio">With deep knowledge of electric and acoustic guitars, Sahil has been helping guitarists find their sound at K&P Music for over a decade.</p>
-              <div class="contact-info">
-                  <p>Email: sahil@kpmusic.com</p>
-                  <p>Specialties: Electric & Acoustic Guitars</p>
-              </div>
-          </div>
-      </div>
+        .sign-in-form-container {
+            width: 100%;
+            min-height: 70vh;
+            position: relative;
+            text-align: center;
+        }
 
-      <div class="team-member">
-          <div class="team-member-front">
-              <img src="assets/home/image/pravin.jpeg" alt="Parvin Pawar" />
-              <h3>Parvin Pawar</h3>
-              <p class="position">Music Education Director</p>
-          </div>
-          <div class="team-member-back">
-              <h3>Parvin Pawar</h3>
-              <p class="bio">Parvin coordinates our lesson programs and workshops, bringing her experience as a music educator to help students of all ages discover the joy of making music.</p>
-              <div class="contact-info">
-                  <p>Email: parvin@kpmusic.com</p>
-                  <p>Specialties: Music Education</p>
-              </div>
-          </div>
-      </div>
-  </div>
-</section>
+        #sign-in {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            gap: 1vw;
+        }
 
-<style>
-.team-members {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  perspective: 1000px;
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-between;
+            gap: 0.2vw;
+            position: relative;
+            margin-bottom: 1vw;
+        }
 
-.team-member {
-  background: transparent;
-  height: 400px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 1.5s;
-  cursor: pointer;
-}
+        .form-group input {
+            width: 41.3vw;
+            height: 3vw;
+            border-radius: 0.5vw;
+            font-size: 1vw;
+            padding: 0.2vw 1vw;
+        }
 
-.team-member-front,
-.team-member-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-}
+        .form-group .eye-icon {
+            position: absolute;
+            right: 1vw;
+            top: 75%;
+            transform: translateY(-75%);
+            cursor: pointer;
+            color: #888;
+            font-size: 18px;
+        }
 
-.team-member-front img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 1rem;
-}
+        .form-group .eye-icon:hover {
+            color: #333;
+        }
 
-.team-member-front {
-  transform: rotateY(0deg);
-}
+        .sign-up-btn button {
+            width: 41.3vw;
+            height: 3.2vw;
+            border-radius: 0.5vw;
+            font-size: 1.2vw;
+            padding: 0.2vw 1vw;
+            text-transform: uppercase;
+            transition: all ease-in-out 0.3s;
+        }
 
-.team-member-back {
-  transform: rotateY(180deg);
-  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-  color: white;
-}
+        .sign-up-btn button:hover {
+            background-color: #000;
+            color: #fff;
+        }
 
-.team-member:hover {
-  transform: rotateY(180deg);
-}
+        .form-last {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14vw;
+        }
 
-.team-member-back .contact-info {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-}
+        .redirect p {
+            font-size: 1.3vw;
+        }
 
-.team-member-back .contact-info p {
-  margin: 0.5rem 0;
-}
-</style>
+        .redirect > p > a {
+            padding-left: 0.4vw;
+        }
+
+        .forgot-pass a, .redirect > p > a {
+            font-size: 1.3vw;
+            text-decoration: none;
+        }
+
+        .redirect > p > a:hover, .forgot-pass a:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="sign-in-form-container">
+        <div id="sign-in">
+            <div class="form-title">
+                <h1>Sign In</h1>
+                <p>Enter your credentials to access your account</p>
+            </div>
+
+            <form action="sign-in.php" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <span class="eye-icon" onclick="togglePasswordVisibility()">👁️</span>
+                </div>
+
+                <div class="sign-up-btn">
+                    <button type="submit">Sign In</button>
+                </div>
+            </form>
+
+            <div class="form-last redirect">
+                <p>Don't have an account? <a href="sign-up.php">Register</a></p>
+                <div class="forgot-pass">
+                    <a href="forgot-password.php">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    </script>
+</body>
+</html>

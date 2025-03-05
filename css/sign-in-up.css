@@ -24,138 +24,121 @@
     will-change: auto;
   }
 
-  /* Sign-up Page CSS*/
-
-  .sign-up-form-container{
-    width: 100%;
-    min-height: 70vh;
-    position: relative;
-    margin-top: 3vw;
-  }
-
-  #sign-up{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    gap: 1vw;
-  }
-
-.form-title h1{
-  font-size: 4vw;
-}
-
-.form-title p{
-  font-size: 1.3vw;
-  text-align: center;
-}
-
-
-  .form-group{
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: space-between;
-    gap: .2vw;
-    position: relative;
-  }
-
-
-  .form-group input{
-    width: 41.3vw;
-    height: 3vw;
-    border-radius: .5vw;
-    font-size: 1vw;
-    padding: .2vw 1vw;
-  }
-  .flex-group{
-    display: flex;
-    justify-content: space-between;
-    gap: 1.3vw;
-  }
-
-  .flex-group input{
-    width: 20vw;
-    height: 3vw;
-    border-radius: .5vw;
-    font-size: 1vw;
-    padding: .2vw 1vw;
-  }
-
-.sign-up-btn button{
-    width: 41.3vw;
-    height: 3.2vw;
-    border-radius: .5vw;
-    font-size: 1.2vw;
-    padding: .2vw 1vw;
-    text-transform: uppercase;
-    transition: all ease-in-out .3s;
-}
-
-.sign-up-btn button:hover{
-  background-color: #000;
-  color: #fff;
-}
-
-.form-group .eye-icon {
-  position: absolute;
-  right: 1vw;
-  top: 75%;
-  transform: translateY(-75%);
-  cursor: pointer;
-  color: #888;
-  font-size: 18px;
-}
-
-.form-group .eye-icon:hover {
-  color: #333;
-}
-
+ 
 /*Sign In Page Css*/
 
-.sign-in-form-container{
-  width: 100%;
-  min-height: 70vh;
+.form-title h1{
+  margin: 0;
+}
+.form-title p{
+  font-size: 1.3vw;
+  font-weight: 600;
+}
+
+.sign-box{
+  margin-top: 8vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-group{
   position: relative;
+  display: inline-block;
+}
+
+.form-group  label{
+ font-size: 1.3vw;
+ margin-bottom: .2vw;
+}
+.form-group input{
+  width: 40vw;
+  padding: .7vw 2vw;
+  border-radius: 5px;
+  font-size: 1vw;
+  margin: 0  0  1vw 0;
+  outline: none;
+}
+
+.login-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
 }
 
-#sign-in{
+.login-form{
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  gap: 1vw;
+  align-items: center;
+}
+.form-group{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.form-last-redirect{
+  display: flex;
+  gap: 11vw;
+}
+.form-last-redirect p>a ,.forgot-pass a{
+  text-decoration: none;
+  margin-left: 1vw;
+  color: #000;
+  font-weight: 600;
+}
+.form-last-redirect p>a:hover ,.forgot-pass a:hover{
+  color:red;
+  text-decoration: underline;
 }
 
 
-.form-last{
+.toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 3.7vw;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+.sign-in-btn button{
+  width: 35vw;
+  padding:.8vw;
+  border-radius: 5vw;
+  margin: 10px 0;
+  font-size: 1vw;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.sign-in-btn button::after{
+  content: "Sign In";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -110%;
+  left: 0;
+  font-weight: 900;
+  background-color: #000;
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14vw;
+  border-radius: 5vw;
+  text-transform: uppercase;
 }
 
-.redirect p{
-  font-size: 1.3vw; 
-}
-
-.redirect>p>a{
-  padding-left: .4vw;
-}
-.forgot-pass a , .redirect>p>a{
-font-size: 1.3vw;
-text-decoration: none;
-}
-
-.redirect>p>a:hover , .forgot-pass a:hover {
-  color: red;
+.sign-in-btn button:hover::after{
+  top: 0;
+  transition: .5s;
+  color: #fff;
 }

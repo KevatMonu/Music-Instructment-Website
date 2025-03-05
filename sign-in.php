@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 $conn = new mysqli("localhost", "root", "", "musicstore_database");
 
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $stmt->store_result();
     $stmt->bind_result($user_id, $full_name, $hashed_password, $user_role);
-    
+
     if ($stmt->num_rows > 0) {
         $stmt->fetch();
         if (password_verify($password, $hashed_password)) {
@@ -50,110 +50,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MusicStore - Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #8360c3, #2ebf91);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+<?php include 'pages/header.php'; ?>
 
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: bold;
-            text-align: left;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        input {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        button {
-            background: #2ebf91;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background: #27a67e;
-        }
-
-        p {
-            margin-top: 10px;
-        }
-
-        a {
-            color: #2ebf91;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
-        <?php
-        if (isset($_SESSION['error'])) {
-            echo "<p class='error'>" . $_SESSION['error'] . "</p>";
-            unset($_SESSION['error']);
-        }
-        ?>
-        <form action="sign-in.php" method="POST">
-            <label>Email:</label>
-            <input type="email" name="email" required>
-            <label>Password:</label>
-            <input type="password" name="password" required>
-            <button type="submit">Sign In</button>
-        </form>
-        <p>Don't have an account? <a href="sign-up.php">Register</a></p>
+    <div class="sign-box">
+        <div class="login-container">
+            <div class="form-title">
+                <h1>Sign In</h1>
+                <p>Enter your credentials to access your account</p>
+            </div>
+            <?php
+            if (isset($_SESSION['error'])) {
+                echo "<p class='error'>" . $_SESSION['error'] . "</p>";
+                unset($_SESSION['error']);
+            }
+            ?>
+            <form action="sign-in.php" method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <span id="toggleIcon" class="toggle-icon" onclick="togglePasswordVisibility()">👁️</span>
+                </div>
+
+                <div class="sign-in-btn">
+                    <button type="submit">Sign In </button>
+                </div>
+            </form>
+            <div class="form-last-redirect">
+                <p>Don't have an account? <a href="sign-up.php">Register</a></p>
+                <div class="forgot-pass">
+                    <a href="forget_password.php">Forgot Password ?</a>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '👁️'; // Slash Eye
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '🙈'; // Unslash Eye
+            }
+        }
+    </script>
+    <?php include 'pages/footer.php'; ?>
