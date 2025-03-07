@@ -176,6 +176,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['place_order'])) {
                     <li><a href="products.php">Products</a></li>
                     <li><a href="about.php">About Us</a></li>
                     <li><a href="contact.php">Contact Us</a></li>
+                    <?php if (!isset($_SESSION['user_id'])): ?>
+  <a href="sign-in.php">
+    <li>Sign In</li>
+  </a>
+<?php endif; ?>
                 </ul>
             </nav>
             <div class="navbar-actions">

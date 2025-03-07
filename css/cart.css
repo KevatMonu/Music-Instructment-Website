@@ -298,13 +298,13 @@ td img {
 }
 
 .empty-cart i {
-  font-size: 60px;
+  font-size: 1.5vw;
   color: #d1d5db;
   margin-bottom: 20px;
 }
 
 .empty-cart h2 {
-  font-size: 24px;
+  font-size: 2vw;
   color: #4b5563;
   margin-bottom: 10px;
 }
@@ -493,6 +493,8 @@ td img {
             background-color: #4f46e5;
             color: white;
             border: none;
+            padding: .9vw 2vw 0 2vw ;
+            
         }
         
         .btn-primary:hover {
@@ -532,9 +534,10 @@ td img {
         }
         
         .empty-cart i {
-            font-size: 60px;
+            font-size:1vw ;
             color: #d1d5db;
-            margin-bottom: 20px;
+            margin-right: 1vw;
+            text-align: center;
         }
         
         .empty-cart h2 {

@@ -106,9 +106,11 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
           <a href="contact.php">
             <li>Contact Us</li>
           </a>
-          <a href="sign-in.php">
-            <li>Sign In</li>
-          </a>
+          <?php if (!isset($_SESSION['user_id'])): ?>
+            <a href="sign-in.php">
+              <li>Sign In</li>
+            </a>
+          <?php endif; ?>
           <a href="rent.php">
             <li>Rent</li>
           </a>
@@ -117,12 +119,11 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
     </div>
     <div class="nav2">
       <div class="nav2-icon">
-        <i class="fa-regular fa-heart"></i>
         <a href="cart.php" class="cart-link">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <?php if ($totalItems > 0): ?>
-                <span class="cart-count"><?php echo $totalItems; ?></span>
-            <?php endif; ?>
+          <i class="fa-solid fa-cart-shopping"></i>
+          <?php if ($totalItems > 0): ?>
+            <span class="cart-count"><?php echo $totalItems; ?></span>
+          <?php endif; ?>
         </a>
         <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
       </div>
@@ -139,7 +140,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
         </div>
       </div>
     </div>
-    
+
     <div id="page2">
       <div class="shop-cat">
         <div class="cat-head">
@@ -216,24 +217,18 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
         <div class="seller-list">
           <div class="sell-item">
             <div class="sell-img">
-              <img
-                src="assets/home/products/18-Pipes-Pan-Flute-F-Key-1.webp"
-                alt="Piano" />
-              <img
-                id="hover"
-                src="assets/home/products/hover-18-Pipes-Pan-Flute-F-Key-2.webp"
-                alt="" />
+              <img src="assets/home/products/18-Pipes-Pan-Flute-F-Key-1.webp" alt="Piano" />
+              <img id="hover" src="assets/home/products/hover-18-Pipes-Pan-Flute-F-Key-2.webp" alt="" />
             </div>
             <div class="sell-text">
               <a href="#"> 18 Pipes Pan Flute F Key</a>
-              <p>₹500 <span>₹1000 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
             </div>
           </div>
+
+
 
           <div class="sell-item">
             <div class="sell-img">
@@ -248,12 +243,9 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#">70s Jaguar-Electric-Guitar</a>
-              <p>₹5000 <span>₹7500 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
             </div>
           </div>
 
@@ -270,12 +262,11 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#"> 88-Key Digital Piano</a>
-              <p>₹2500 <span>₹3500</span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
+
+
             </div>
           </div>
 
@@ -292,12 +283,11 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#">Affordable Home Piano</a>
-              <p>₹10000 <span>₹12000 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
+
+
             </div>
           </div>
 
@@ -314,11 +304,10 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#">AS-400 Alto Saxophone</a>
-              <p>₹7000 <span>₹9500 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
+
               <i class="ri-heart-line"></i>
             </div>
           </div>
@@ -336,12 +325,11 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#">Beginner's Classical Guitar</a>
-              <p>₹4000 <span>₹7000 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
+
+
             </div>
           </div>
 
@@ -358,12 +346,10 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#">Brown Vertical Bamboo Flute</a>
-              <p>₹700<span>₹1000 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
+
             </div>
           </div>
 
@@ -380,230 +366,285 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
             <div class="sell-text">
               <a href="#"> Cutway Style With 6 Strings</a>
-              <p>₹5000 <span>₹10000 </span></p>
             </div>
             <div class="sell-icon">
-              <i class="ri-shopping-bag-4-line"></i>
-              <i class="ri-search-line"></i>
-              <i class="ri-heart-line"></i>
+              <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div id="banner">
-      <div class="banner-container">
-        <div class="banner-text">
-          <h1>Sale event</h1>
-          <h3>Save on all selling and exclusive styles</h3>
+  <div id="banner">
+    <div class="banner-container">
+      <div class="banner-text">
+        <h1>Sale event</h1>
+        <h3>Save on all selling and exclusive styles</h3>
+      </div>
+
+      <div class="counter">
+        <div class="time-unit">
+          <div class="circle" id="days">--</div>
+          <div class="label">Days</div>
         </div>
-
-        <div class="counter">
-          <div class="time-unit">
-            <div class="circle" id="days">--</div>
-            <div class="label">Days</div>
-          </div>
-          <div class="time-unit">
-            <div class="circle" id="hours">--</div>
-            <div class="label">Hours</div>
-          </div>
-          <div class="time-unit">
-            <div class="circle" id="minutes">--</div>
-            <div class="label">Mins</div>
-          </div>
-          <div class="time-unit">
-            <div class="circle" id="seconds">--</div>
-            <div class="label">Secs</div>
-          </div>
+        <div class="time-unit">
+          <div class="circle" id="hours">--</div>
+          <div class="label">Hours</div>
         </div>
+        <div class="time-unit">
+          <div class="circle" id="minutes">--</div>
+          <div class="label">Mins</div>
+        </div>
+        <div class="time-unit">
+          <div class="circle" id="seconds">--</div>
+          <div class="label">Secs</div>
+        </div>
+      </div>
 
-        <div class="banner-btn">
-          <button>Buy Now !</button>
+      <div class="banner-btn">
+        <button>Buy Now !</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="page3">
+    <div class="page3-title">
+      <div class="t1">
+        <h3>Our Product</h3>
+        <h1>Discover Our Collections</h1>
+      </div>
+      <button class="t2">
+        Explore all collections <i class="ri-arrow-right-line"></i>
+      </button>
+    </div>
+
+    <div class="page3-product">
+      <div class="product-container">
+        <div class="p-text">
+          <h1>01</h1>
+        </div>
+        <div class="p-img">
+          <img
+            src="assets/home/product-img/guitar-shop-acoustic.png"
+            alt="" />
+        </div>
+      </div>
+
+      <div class="product-container">
+        <div class="p-text">
+          <h1>02</h1>
+        </div>
+        <div class="p-img">
+          <img
+            src="assets/home/product-img/guitar-shop-electric.png"
+            alt="" />
+        </div>
+      </div>
+
+      <div class="product-container">
+        <div class="p-text">
+          <h1>03</h1>
+        </div>
+        <div class="p-img">
+          <img src="assets/home/product-img/guitar-shop-bass.png" alt="" />
+        </div>
+      </div>
+
+      <div class="product-container">
+        <div class="p-text">
+          <h1>04</h1>
+        </div>
+        <div class="p-img">
+          <img src="assets/home/product-img/guitar-shop-uklea.png" alt="" />
         </div>
       </div>
     </div>
+  </div>
 
-    <div id="page3">
-      <div class="page3-title">
-        <div class="t1">
-          <h3>Our Product</h3>
-          <h1>Discover Our Collections</h1>
-        </div>
-        <button class="t2">
-          Explore all collections <i class="ri-arrow-right-line"></i>
-        </button>
+  <div id="page4">
+    <div class="page4-left">
+      <h1>our story</h1>
+      <h3>
+        Embracing a Musical <br />
+        Revolution
+      </h3>
+      <div class="music-svg">
+        <img src="assets/home/image/music-info.webp" alt="" />
       </div>
-
-      <div class="page3-product">
-        <div class="product-container">
-          <div class="p-text">
-            <h1>01</h1>
-          </div>
-          <div class="p-img">
-            <img
-              src="assets/home/product-img/guitar-shop-acoustic.png"
-              alt="" />
-          </div>
-        </div>
-
-        <div class="product-container">
-          <div class="p-text">
-            <h1>02</h1>
-          </div>
-          <div class="p-img">
-            <img
-              src="assets/home/product-img/guitar-shop-electric.png"
-              alt="" />
-          </div>
-        </div>
-
-        <div class="product-container">
-          <div class="p-text">
-            <h1>03</h1>
-          </div>
-          <div class="p-img">
-            <img src="assets/home/product-img/guitar-shop-bass.png" alt="" />
-          </div>
-        </div>
-
-        <div class="product-container">
-          <div class="p-text">
-            <h1>04</h1>
-          </div>
-          <div class="p-img">
-            <img src="assets/home/product-img/guitar-shop-uklea.png" alt="" />
-          </div>
-        </div>
+      <p>
+        Discover a world of music with our carefully curated collections.
+        From the soulful strings of our Guitar Gallery to the elegant
+        harmonies of our Violin Vault, and the resonant depths of our Cello
+        Corner, we have the perfect instrument to match your passion and
+        skill. Explore all our collections and find the instrument that
+        speaks to you at our musical instrument shop.
+      </p>
+      <a href="products.php"> <button>Shop Now</button></a>
+    </div>
+    <div class="page4-right">
+      <div class="right-image-one">
+        <img src="assets/home/image/canva-female-musician.webp" alt="" />
+      </div>
+      <div class="right-image-two">
+        <img src="assets/home/image/guitarbg.webp" alt="" />
       </div>
     </div>
+  </div>
 
-    <div id="page4">
-      <div class="page4-left">
-        <h1>our story</h1>
-        <h3>
-          Embracing a Musical <br />
-          Revolution
-        </h3>
-        <div class="music-svg">
-          <img src="assets/home/image/music-info.webp" alt="" />
-        </div>
+  <div id="page5">
+    <div class="page5-container">
+      <div class="page5-left">
+        <h1>
+          Where words fail, music speaks. <br />
+          <span>Through every chord and melody, music has the power to heal,
+            inspire, and connect us all.</span>
+        </h1>
         <p>
-          Discover a world of music with our carefully curated collections.
-          From the soulful strings of our Guitar Gallery to the elegant
-          harmonies of our Violin Vault, and the resonant depths of our Cello
-          Corner, we have the perfect instrument to match your passion and
-          skill. Explore all our collections and find the instrument that
-          speaks to you at our musical instrument shop.
+          At K&P Music, we understand that music is the language of the
+          soul. Our collection of instruments is carefully curated to help
+          you express what words cannot. Whether you’re just beginning or
+          are a seasoned musician, we offer the tools to bring your music to
+          life and share it with the world. Let music be your voice!
         </p>
-        <a href="products.php"> <button>Shop Now</button></a>
       </div>
-      <div class="page4-right">
-        <div class="right-image-one">
-          <img src="assets/home/image/canva-female-musician.webp" alt="" />
-        </div>
-        <div class="right-image-two">
-          <img src="assets/home/image/guitarbg.webp" alt="" />
-        </div>
-      </div>
-    </div>
-
-    <div id="page5">
-      <div class="page5-container">
-        <div class="page5-left">
-          <h1>
-            Where words fail, music speaks. <br />
-            <span>Through every chord and melody, music has the power to heal,
-              inspire, and connect us all.</span>
-          </h1>
-          <p>
-            At K&P Music, we understand that music is the language of the
-            soul. Our collection of instruments is carefully curated to help
-            you express what words cannot. Whether you’re just beginning or
-            are a seasoned musician, we offer the tools to bring your music to
-            life and share it with the world. Let music be your voice!
-          </p>
-        </div>
-        <div class="page5-left">
-          <div class="page5-input">
-            <input type="email" name="" placeholder="Enter your email...." />
-            <i class="ri-send-plane-fill"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="footer">
-      <div class="foot-top">
-        <div class="foot-line"></div>
-        <div class="foot-icon">
-          <i class="ri-truck-line"></i>free home delivery
-        </div>
-        <div class="foot-icon">
-          <i class="ri-shield-keyhole-fill"></i>secured payment
-        </div>
-        <div class="foot-icon">
-          <i class="ri-time-line"></i>on time delivery
-        </div>
-        <div class="foot-line"></div>
-      </div>
-      <div class="foot-bottom">
-        <div class="foot-bottom-items">
-          <h4>info</h4>
-          <p>Contact Us</p>
-          <p>Order tracking</p>
-          <p>Customer Service</p>
-          <p>F.A.Q's</p>
-        </div>
-
-        <div class="foot-bottom-items">
-          <h4>policies</h4>
-          <p>Shipping Policy</p>
-          <p>Return Policy</p>
-          <p>Privacy Policy</p>
-          <p>Terms & Conditions</p>
-        </div>
-        <div class="foot-bottom-items">
-          <h4>Services</h4>
-          <p>Privacy Policy</p>
-          <p>Your Account</p>
-          <p>Terms & Conditions</p>
-          <p>Contact Us</p>
-        </div>
-
-        <div class="foot-bottom-items">
-          <h4>Account</h4>
-          <p>About Us</p>
-          <p>Terms & Conditions</p>
-          <p>Privacy Policy</p>
-          <p>Contact Us</p>
-        </div>
-
-        <div class="foot-bottom-items">
-          <h1>Newsletter</h1>
-          <p>
-            Subscribe to our newsletter and get 10% off your first purchase
-          </p>
+      <div class="page5-left">
+        <div class="page5-input">
           <input type="email" name="" placeholder="Enter your email...." />
-          <button>Subscribe</button>
-          <div class="foot-social">
-            <i class="ri-facebook-fill"></i>
-            <i class="ri-instagram-fill"></i>
-            <i class="ri-twitter-fill"></i>
-            <i class="ri-youtube-fill"></i>
-          </div>
+          <i class="ri-send-plane-fill"></i>
         </div>
       </div>
     </div>
-  </div> 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  </div>
 
-    <script src="js/app.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <div id="footer">
+    <div class="foot-top">
+      <div class="foot-line"></div>
+      <div class="foot-icon">
+        <i class="ri-truck-line"></i>free home delivery
+      </div>
+      <div class="foot-icon">
+        <i class="ri-shield-keyhole-fill"></i>secured payment
+      </div>
+      <div class="foot-icon">
+        <i class="ri-time-line"></i>on time delivery
+      </div>
+      <div class="foot-line"></div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-bottom-items">
+        <h4>info</h4>
+        <p>Contact Us</p>
+        <p>Order tracking</p>
+        <p>Customer Service</p>
+        <p>F.A.Q's</p>
+      </div>
+
+      <div class="foot-bottom-items">
+        <h4>policies</h4>
+        <p>Shipping Policy</p>
+        <p>Return Policy</p>
+        <p>Privacy Policy</p>
+        <p>Terms & Conditions</p>
+      </div>
+      <div class="foot-bottom-items">
+        <h4>Services</h4>
+        <p>Privacy Policy</p>
+        <p>Your Account</p>
+        <p>Terms & Conditions</p>
+        <p>Contact Us</p>
+      </div>
+
+      <div class="foot-bottom-items">
+        <h4>Account</h4>
+        <p>About Us</p>
+        <p>Terms & Conditions</p>
+        <p>Privacy Policy</p>
+        <p>Contact Us</p>
+      </div>
+
+      <div class="foot-bottom-items">
+        <h1>Newsletter</h1>
+        <p>
+          Subscribe to our newsletter and get 10% off your first purchase
+        </p>
+        <input type="email" name="" placeholder="Enter your email...." />
+        <button>Subscribe</button>
+        <div class="foot-social">
+          <i class="ri-facebook-fill"></i>
+          <i class="ri-instagram-fill"></i>
+          <i class="ri-twitter-fill"></i>
+          <i class="ri-youtube-fill"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script src="js/app.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Add to cart functionality for the shopping bag icon
+      $(".sell-icon .add-to-cart").click(function(e) {
+        e.preventDefault();
+
+        // Get product ID from data attribute
+        var productId = $(this).data('id');
+
+        // Get the icon element
+        var iconElement = $(this).find('i');
+
+        // Disable clicking temporarily
+        $(this).css('pointer-events', 'none');
+
+        // Show loading animation
+        iconElement.removeClass('ri-shopping-bag-4-line').addClass('ri-loader-4-line fa-spin');
+
+        // Send AJAX request to add item to cart
+        $.get("products.php?action=add&id=" + productId, function(response) {
+          try {
+            let data = JSON.parse(response);
+            if (data.success) {
+              // Update cart count in the navbar
+              if ($(".cart-count").length) {
+                $(".cart-count").text(data.totalItems);
+              } else {
+                $(".cart-link").append('<span class="cart-count">' + data.totalItems + '</span>');
+              }
+
+              // Show success feedback
+              iconElement.removeClass('ri-loader-4-line fa-spin').addClass('ri-check-line');
+
+              // Reset icon after delay
+              setTimeout(function() {
+                iconElement.removeClass('ri-check-line').addClass('ri-shopping-bag-4-line');
+                $(this).css('pointer-events', 'auto');
+              }, 1500);
+            }
+          } catch (e) {
+            console.error("Error parsing response:", e);
+            iconElement.removeClass('ri-loader-4-line fa-spin').addClass('ri-shopping-bag-4-line');
+            $(this).css('pointer-events', 'auto');
+          }
+        }).fail(function() {
+          // Handle error
+          iconElement.removeClass('ri-loader-4-line fa-spin').addClass('ri-error-warning-line');
+          setTimeout(function() {
+            iconElement.removeClass('ri-error-warning-line').addClass('ri-shopping-bag-4-line');
+            $(this).css('pointer-events', 'auto');
+          }, 1500);
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

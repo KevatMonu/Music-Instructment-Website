@@ -23,13 +23,14 @@ if (isset($_GET['action']) && $_GET['action'] == "add" && isset($_GET['id'])) {
 }
 
 // Function to remove query parameters
-function removeQueryParam($paramsToRemove) {
+function removeQueryParam($paramsToRemove)
+{
     $currentUrl = parse_url($_SERVER['REQUEST_URI']);
     $path = $currentUrl['path'];
-    
+
     if (isset($currentUrl['query'])) {
         parse_str($currentUrl['query'], $queryParams);
-        
+
         if (is_array($paramsToRemove)) {
             foreach ($paramsToRemove as $param) {
                 unset($queryParams[$param]);
@@ -37,12 +38,12 @@ function removeQueryParam($paramsToRemove) {
         } else {
             unset($queryParams[$paramsToRemove]);
         }
-        
+
         if (count($queryParams) > 0) {
             return $path . '?' . http_build_query($queryParams);
         }
     }
-    
+
     return $path;
 }
 
@@ -172,6 +173,7 @@ $productCount = $result->num_rows;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -184,44 +186,47 @@ $productCount = $result->num_rows;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
 
 </head>
+
 <body>
- 
+
     <div id="nav">
-    <div class="nav1">
-      <div class="logo">
-        <img src="assets/home/image/logo.png" alt="" />
-      </div>
-      <div class="nav-item">
-        <ul id="nav-item">
-          <a href="index.php">
-            <li>Home</li>
-          </a>
-          <a href="products.php">
-            <li>Product</li>
-          </a>
-          <a href="about.php">
-            <li>About Us</li>
-          </a>
-          <a href="contact.php">
-            <li>Contact Us</li>
-          </a>
-          <a href="sign-in.php">
-            <li>Sign In</li>
-          </a>
-          <a href="rent.php">
-            <li>Rent</li>
-          </a>
-        </ul>
-      </div>
-    </div>
-    <div class="nav2">
-    <div class="search-container">
+        <div class="nav1">
+            <div class="logo">
+                <img src="assets/home/image/logo.png" alt="" />
+            </div>
+            <div class="nav-item">
+                <ul id="nav-item">
+                    <a href="index.php">
+                        <li>Home</li>
+                    </a>
+                    <a href="products.php">
+                        <li>Product</li>
+                    </a>
+                    <a href="about.php">
+                        <li>About Us</li>
+                    </a>
+                    <a href="contact.php">
+                        <li>Contact Us</li>
+                    </a>
+                    <?php if (!isset($_SESSION['user_id'])): ?>
+                        <a href="sign-in.php">
+                            <li>Sign In</li>
+                        </a>
+                    <?php endif; ?>
+                    <a href="rent.php">
+                        <li>Rent</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="nav2">
+            <div class="search-container">
                 <form method="GET" action="products.php" class="search-form" id="search-form">
                     <input type="text" name="search" class="search-input" placeholder="Search products..." value="<?php echo htmlspecialchars($searchQuery); ?>">
                     <button type="submit" class="search-button">
                         <i class="fas fa-search"></i>
                     </button>
-                    
+
                     <!-- Hidden inputs to preserve filter state when searching -->
                     <input type="hidden" name="category" value="<?php echo htmlspecialchars($selectedCategory); ?>">
                     <input type="hidden" name="min_price" value="<?php echo htmlspecialchars($minPriceFilter); ?>">
@@ -233,28 +238,27 @@ $productCount = $result->num_rows;
                     <a href="products.php" class="clear-search">Clear</a>
                 <?php endif; ?>
             </div>
-      <div class="nav2-icon">
-        <i class="fa-regular fa-heart"></i>
-        <a href="cart.php" class="cart-link">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <?php if ($totalItems > 0): ?>
-                <span class="cart-count"><?php echo $totalItems; ?></span>
-            <?php endif; ?>
-        </a>
-        <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
-      </div>
+            <div class="nav2-icon">
+                <a href="cart.php" class="cart-link">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <?php if ($totalItems > 0): ?>
+                        <span class="cart-count"><?php echo $totalItems; ?></span>
+                    <?php endif; ?>
+                </a>
+                <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
+            </div>
+        </div>
     </div>
-  </div>
     <!-- Main Content -->
     <div class="main-content">
-   
+
         <div class="container">
             <div class="product-container">
                 <!-- Filter Sidebar Toggle for Mobile -->
                 <button class="filter-toggle" id="filter-toggle">
                     <i class="fas fa-filter"></i> Show Filters
                 </button>
-                
+
                 <!-- Filter Sidebar -->
                 <div class="filter-sidebar mobile-hidden" id="filter-sidebar">
                     <form id="filter-form" method="GET" action="products.php">
@@ -262,7 +266,7 @@ $productCount = $result->num_rows;
                         <?php if (!empty($searchQuery)): ?>
                             <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchQuery); ?>">
                         <?php endif; ?>
-                        
+
                         <!-- Sort By Filter -->
                         <div class="filter-section">
                             <div class="filter-title">Sort By</div>
@@ -291,7 +295,7 @@ $productCount = $result->num_rows;
                                 </label>
                             </div>
                         </div>
-                        
+
                         <!-- Price Range Filter -->
                         <div class="filter-section">
                             <div class="filter-title">Price Range</div>
@@ -307,7 +311,7 @@ $productCount = $result->num_rows;
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Category Filter -->
                         <div class="filter-section">
                             <div class="filter-title">Categories</div>
@@ -318,15 +322,15 @@ $productCount = $result->num_rows;
                                 </label>
                             </div>
                             <?php foreach ($categories as $id => $name): ?>
-                            <div class="filter-option">
-                                <label>
-                                    <input type="radio" name="category" value="<?php echo $id; ?>" <?php echo $selectedCategory == $id ? 'checked' : ''; ?>>
-                                    <?php echo htmlspecialchars($name); ?>
-                                </label>
-                            </div>
+                                <div class="filter-option">
+                                    <label>
+                                        <input type="radio" name="category" value="<?php echo $id; ?>" <?php echo $selectedCategory == $id ? 'checked' : ''; ?>>
+                                        <?php echo htmlspecialchars($name); ?>
+                                    </label>
+                                </div>
                             <?php endforeach; ?>
                         </div>
-                        
+
                         <!-- Availability Filter -->
                         <div class="filter-section">
                             <div class="filter-title">Availability</div>
@@ -349,7 +353,7 @@ $productCount = $result->num_rows;
                                 </label>
                             </div>
                         </div>
-                        
+
                         <!-- Apply/Reset Buttons -->
                         <button type="submit" class="filter-apply">Apply Filters</button>
                         <a href="products.php" class="filter-clear" style="display: block; text-align: center; margin-top: 10px;">Reset All Filters</a>
@@ -357,10 +361,10 @@ $productCount = $result->num_rows;
                 </div>
 
                 <!-- Product Content Area -->
-                
+
             </div>
             <div class="product-content">
-                    <?php if (!empty($searchQuery) || !empty($selectedCategory) || !empty($selectedAvailability) || $minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice || !empty($sortOption)): ?>
+                <?php if (!empty($searchQuery) || !empty($selectedCategory) || !empty($selectedAvailability) || $minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice || !empty($sortOption)): ?>
                     <div class="active-filters">
                         <?php if (!empty($searchQuery)): ?>
                             <div class="filter-tag">
@@ -368,235 +372,274 @@ $productCount = $result->num_rows;
                                 <a href="<?php echo removeQueryParam('search'); ?>"><i class="fas fa-times"></i></a>
                             </div>
                         <?php endif; ?>
-                        
+
                         <?php if (!empty($selectedCategory)): ?>
                             <div class="filter-tag">
                                 Category: <?php echo htmlspecialchars($categories[$selectedCategory]); ?>
                                 <a href="<?php echo removeQueryParam('category'); ?>"><i class="fas fa-times"></i></a>
                             </div>
                         <?php endif; ?>
-                        
+
                         <?php if (!empty($selectedAvailability)): ?>
                             <div class="filter-tag">
                                 Availability: <?php echo $selectedAvailability == 'in_stock' ? 'In Stock' : 'Out of Stock'; ?>
                                 <a href="<?php echo removeQueryParam('availability'); ?>"><i class="fas fa-times"></i></a>
                             </div>
                         <?php endif; ?>
-                        
+
                         <?php if ($minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice): ?>
                             <div class="filter-tag">
                                 Price: ₹<?php echo $minPriceFilter; ?> - $<?php echo $maxPriceFilter; ?>
                                 <a href="<?php echo removeQueryParam(['min_price', 'max_price']); ?>"><i class="fas fa-times"></i></a>
                             </div>
                         <?php endif; ?>
-                        
+
                         <?php if (!empty($sortOption)): ?>
                             <div class="filter-tag">
-                                Sort: <?php 
-                                    switch($sortOption) {
-                                        case 'price_low_high': echo 'Price: Low to High'; break;
-                                        case 'price_high_low': echo 'Price: High to Low'; break;
-                                        case 'name_asc': echo 'Name: A to Z'; break;
-                                        case 'newest': echo 'Newest First'; break;
-                                    }
-                                ?>
+                                Sort: <?php
+                                        switch ($sortOption) {
+                                            case 'price_low_high':
+                                                echo 'Price: Low to High';
+                                                break;
+                                            case 'price_high_low':
+                                                echo 'Price: High to Low';
+                                                break;
+                                            case 'name_asc':
+                                                echo 'Name: A to Z';
+                                                break;
+                                            case 'newest':
+                                                echo 'Newest First';
+                                                break;
+                                        }
+                                        ?>
                                 <a href="<?php echo removeQueryParam('sort'); ?>"><i class="fas fa-times"></i></a>
                             </div>
                         <?php endif; ?>
-                        
+
                         <a href="products.php" class="filter-clear">Clear All</a>
                     </div>
-                    <?php endif; ?>
+                <?php endif; ?>
 
-                    <!-- Add a result count and sorting information -->
-                    <div class="product-header">
-                        <div class="result-count">
-                            <?php echo $productCount; ?> products found
-                        </div>
+                <!-- Add a result count and sorting information -->
+                <div class="product-header">
+                    <div class="result-count">
+                        <?php echo $productCount; ?> products found
                     </div>
+                </div>
 
-                    <!-- Product Grid -->
-                    <?php if ($productCount > 0): ?>
-                        <div class="product-grid">
-                            <?php while ($product = $result->fetch_assoc()): ?>
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <a href="product_detail.php?id=<?php echo $product['product_id']; ?>">
-                                            <?php if ($product['product_image']): ?>
-                                                <img src="data:<?php echo $product['image_type']; ?>;base64,<?php echo base64_encode($product['product_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
-                                            <?php else: ?>
-                                                <img src="assets/img/product-placeholder.jpg" alt="No image available">
-                                            <?php endif; ?>
+                <!-- Product Grid -->
+                <?php if ($productCount > 0): ?>
+                    <div class="product-grid">
+                        <?php while ($product = $result->fetch_assoc()): ?>
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <a href="product_detail.php?id=<?php echo $product['product_id']; ?>">
+                                        <?php if ($product['product_image']): ?>
+                                            <img src="data:<?php echo $product['image_type']; ?>;base64,<?php echo base64_encode($product['product_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                                        <?php else: ?>
+                                            <img src="assets/img/product-placeholder.jpg" alt="No image available">
+                                        <?php endif; ?>
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h3>
+                                        <a href="product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-name">
+                                            <?php echo htmlspecialchars($product['product_name']); ?>
+                                        </a>
+                                    </h3>
+                                    <p class="product-category"><?php echo htmlspecialchars($product['category_name']); ?></p>
+                                    <div class="product-price">
+                                        <span class="price">₹<?php echo number_format($product['product_price'], 2); ?></span>
+                                        <?php if ($product['rental_cost']): ?>
+                                            <span class="rental-price">Rental: ₹<?php echo number_format($product['rental_cost'], 2); ?>/day</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="product-actions">
+                                        <button class="add-to-cart-btn" data-id="<?php echo $product['product_id']; ?>" <?php echo $product['stock_quantity'] <= 0 ?: ''; ?>>
+                                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                                        </button>
+                                        <a href="product_detail.php?id=<?php echo $product['product_id']; ?>" class="view-details">
+                                            <i class="fas fa-eye"></i> View Details
                                         </a>
                                     </div>
-                                    <div class="product-info">
-                                        <h3>
-                                            <a href="product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-name">
-                                                <?php echo htmlspecialchars($product['product_name']); ?>
-                                            </a>
-                                        </h3>
-                                        <p class="product-category"><?php echo htmlspecialchars($product['category_name']); ?></p>
-                                        <div class="product-price">
-                                            <span class="price">₹<?php echo number_format($product['product_price'], 2); ?></span>
-                                            <?php if ($product['rental_cost']): ?>
-                                                <span class="rental-price">Rental: ₹<?php echo number_format($product['rental_cost'], 2); ?>/day</span>
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="product-actions">
-                                            <button class="add-to-cart-btn" data-id="<?php echo $product['product_id']; ?>" <?php echo $product['stock_quantity'] <= 0 ?  : ''; ?>>
-                                                <i class="fas fa-shopping-cart"></i> Add to Cart
-                                            </button>
-                                            <a href="product_detail.php?id=<?php echo $product['product_id']; ?>" class="view-details">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
-                            <?php endwhile; ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="no-results">
-                            <i class="fas fa-search fa-3x"></i>
-                            <h2>No products found</h2>
-                            <p>Try adjusting your filters or search terms</p>
-                            <?php if (!empty($searchQuery) || !empty($selectedCategory) || !empty($selectedAvailability) || $minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice): ?>
-                                <a href="products.php" class="view-all-button">View All Products</a>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="no-results">
+                        <i class="fas fa-search fa-3x"></i>
+                        <h2>No products found</h2>
+                        <p>Try adjusting your filters or search terms</p>
+                        <?php if (!empty($searchQuery) || !empty($selectedCategory) || !empty($selectedAvailability) || $minPriceFilter > $minPrice || $maxPriceFilter < $maxPrice): ?>
+                            <a href="products.php" class="view-all-button">View All Products</a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
-    
+
     <!-- Footer: Keep your existing footer -->
     <?php include 'pages/footer.php'; ?>
     <script>
-    $(document).ready(function() {
-        // Initialize price slider
-        const priceSlider = document.getElementById('price-slider');
-        const minPriceInput = document.getElementById('min-price-input');
-        const maxPriceInput = document.getElementById('max-price-input');
-        
-        if (priceSlider && minPriceInput && maxPriceInput) {
-            noUiSlider.create(priceSlider, {
-                start: [<?php echo $minPriceFilter; ?>, <?php echo $maxPriceFilter; ?>],
-                connect: true,
-                step: 1,
-                range: {
-                    'min': <?php echo $minPrice; ?>,
-                    'max': <?php echo $maxPrice; ?>
-                },
-                format: {
-                    to: function(value) {
-                        return Math.round(value);
+        $(document).ready(function() {
+            // Initialize price slider
+            const priceSlider = document.getElementById('price-slider');
+            const minPriceInput = document.getElementById('min-price-input');
+            const maxPriceInput = document.getElementById('max-price-input');
+
+            if (priceSlider && minPriceInput && maxPriceInput) {
+                noUiSlider.create(priceSlider, {
+                    start: [<?php echo $minPriceFilter; ?>, <?php echo $maxPriceFilter; ?>],
+                    connect: true,
+                    step: 1,
+                    range: {
+                        'min': <?php echo $minPrice; ?>,
+                        'max': <?php echo $maxPrice; ?>
                     },
-                    from: function(value) {
-                        return Number(value);
-                    }
-                }
-            });
-            
-            priceSlider.noUiSlider.on('update', function(values, handle) {
-                if (handle === 0) {
-                    minPriceInput.value = values[0];
-                } else {
-                    maxPriceInput.value = values[1];
-                }
-            });
-            
-            minPriceInput.addEventListener('change', function() {
-                priceSlider.noUiSlider.set([this.value, null]);
-            });
-            
-            maxPriceInput.addEventListener('change', function() {
-                priceSlider.noUiSlider.set([null, this.value]);
-            });
-        }
-        
-        // Toggle filter sidebar on mobile
-        const filterToggle = document.getElementById('filter-toggle');
-        const filterSidebar = document.getElementById('filter-sidebar');
-        
-        if (filterToggle && filterSidebar) {
-            filterToggle.addEventListener('click', function() {
-                filterSidebar.classList.toggle('mobile-hidden');
-                
-                if (filterSidebar.classList.contains('mobile-hidden')) {
-                    filterToggle.innerHTML = '<i class="fas fa-filter"></i> Show Filters';
-                } else {
-                    filterToggle.innerHTML = '<i class="fas fa-times"></i> Hide Filters';
-                }
-            });
-        }
-        
-        // Auto-submit form when sort option changes
-        const sortOptions = document.querySelectorAll('input[name="sort"]');
-        sortOptions.forEach(option => {
-            option.addEventListener('change', function() {
-                document.getElementById('filter-form').submit();
-            });
-        });
-        
-        // Add to cart functionality - Fixed implementation from Code 2
-        $(".add-to-cart-btn").click(function(e) {
-            e.preventDefault();
-            let productId = $(this).data("id");
-            let button = $(this);
-            
-            // Disable button temporarily to prevent multiple clicks
-            button.prop('disabled', true);
-            
-            // Add loading effect
-            button.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
-            
-            $.get("products.php?action=add&id=" + productId, function(response) {
-                try {
-                    let data = JSON.parse(response);
-                    if (data.success) {
-                        // Update cart count
-                        if ($(".cart-count").length) {
-                            $(".cart-count").text(data.totalItems);
-                        } else {
-                            $(".cart-link").append('<span class="cart-count">' + data.totalItems + '</span>');
+                    format: {
+                        to: function(value) {
+                            return Math.round(value);
+                        },
+                        from: function(value) {
+                            return Number(value);
                         }
-                        
-                        // Show success feedback
-                        button.html('<i class="fas fa-check"></i> Added!');
-                        
-                        // Reset button after delay
-                        setTimeout(function() {
-                            button.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-                            button.prop('disabled', false);
-                        }, 1500);
                     }
-                } catch (e) {
-                    console.error("Error parsing response:", e);
-                    button.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-                    button.prop('disabled', false);
+                });
+
+                priceSlider.noUiSlider.on('update', function(values, handle) {
+                    if (handle === 0) {
+                        minPriceInput.value = values[0];
+                    } else {
+                        maxPriceInput.value = values[1];
+                    }
+                });
+
+                minPriceInput.addEventListener('change', function() {
+                    priceSlider.noUiSlider.set([this.value, null]);
+                });
+
+                maxPriceInput.addEventListener('change', function() {
+                    priceSlider.noUiSlider.set([null, this.value]);
+                });
+            }
+
+            // Toggle filter sidebar on mobile
+            const filterToggle = document.getElementById('filter-toggle');
+            const filterSidebar = document.getElementById('filter-sidebar');
+
+            if (filterToggle && filterSidebar) {
+                filterToggle.addEventListener('click', function() {
+                    filterSidebar.classList.toggle('mobile-hidden');
+
+                    if (filterSidebar.classList.contains('mobile-hidden')) {
+                        filterToggle.innerHTML = '<i class="fas fa-filter"></i> Show Filters';
+                    } else {
+                        filterToggle.innerHTML = '<i class="fas fa-times"></i> Hide Filters';
+                    }
+                });
+            }
+
+            // Auto-submit form when sort option changes
+            const sortOptions = document.querySelectorAll('input[name="sort"]');
+            sortOptions.forEach(option => {
+                option.addEventListener('change', function() {
+                    document.getElementById('filter-form').submit();
+                });
+            });
+
+            // Add to cart functionality - Fixed implementation from Code 2
+            $(".add-to-cart-btn").click(function(e) {
+                e.preventDefault();
+                let productId = $(this).data("id");
+                let button = $(this);
+
+                // Disable button temporarily to prevent multiple clicks
+                button.prop('disabled', true);
+
+                // Add loading effect
+                button.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
+
+                $.get("products.php?action=add&id=" + productId, function(response) {
+                    try {
+                        let data = JSON.parse(response);
+                        if (data.success) {
+                            // Update cart count
+                            if ($(".cart-count").length) {
+                                $(".cart-count").text(data.totalItems);
+                            } else {
+                                $(".cart-link").append('<span class="cart-count">' + data.totalItems + '</span>');
+                            }
+
+                            // Show success feedback
+                            button.html('<i class="fas fa-check"></i> Added!');
+
+                            // Reset button after delay
+                            setTimeout(function() {
+                                button.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                                button.prop('disabled', false);
+                            }, 1500);
+                        }
+                    } catch (e) {
+                        console.error("Error parsing response:", e);
+                        button.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                        button.prop('disabled', false);
+                    }
+                }).fail(function() {
+                    // Handle error
+                    button.html('<i class="fas fa-exclamation-circle"></i> Error');
+                    setTimeout(function() {
+                        button.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                        button.prop('disabled', false);
+                    }, 1500);
+                });
+            });
+
+            // Auto-submit search form when typing
+            let searchTimeout;
+            $(".search-input").on('input', function() {
+                clearTimeout(searchTimeout);
+                let query = $(this).val();
+
+                if (query.length >= 3) {
+                    searchTimeout = setTimeout(function() {
+                        $("#search-form").submit();
+                    }, 500);
                 }
-            }).fail(function() {
-                // Handle error
-                button.html('<i class="fas fa-exclamation-circle"></i> Error');
-                setTimeout(function() {
-                    button.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-                    button.prop('disabled', false);
-                }, 1500);
             });
         });
-        
-        // Auto-submit search form when typing
-        let searchTimeout;
-        $(".search-input").on('input', function() {
-            clearTimeout(searchTimeout);
-            let query = $(this).val();
-            
-            if (query.length >= 3) {
-                searchTimeout = setTimeout(function() {
-                    $("#search-form").submit();
-                }, 500);
-            }
+
+
+
+        /*wishlist*/
+        // Wishlist toggle functionality
+        const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+        wishlistBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-id');
+
+                fetch('wishlist.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'action=toggle&product_id=' + productId
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const heartIcon = this.querySelector('i');
+                            if (data.status === 'added') {
+                                heartIcon.classList.add('active');
+                            } else {
+                                heartIcon.classList.remove('active');
+                            }
+                        }
+                    });
+            });
         });
-    });
     </script>
 </body>
+
 </html>

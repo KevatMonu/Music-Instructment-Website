@@ -107,11 +107,15 @@ $userInfo = $stmt->get_result()->fetch_assoc();
         </div>
         <div class="nav-item">
           <ul id="nav-item">
-            <a href="#index.hmtl"><li>Home</li> </a>
+            <a href="index.php"><li>Home</li> </a>
             <a href="products.php"><li>Product</li> </a>
-            <a href="about.html"><li>About Us</li> </a>
-            <a href="contact.hmtl"><li>Contact Us</li></a>
-            <a href="sign-in.php"><li>Sign In</li> </a>
+            <a href="about.php"><li>About Us</li> </a>
+            <a href="contact.php"><li>Contact Us</li></a>
+            <?php if (!isset($_SESSION['user_id'])): ?>
+  <a href="sign-in.php">
+    <li>Sign In</li>
+  </a>
+<?php endif; ?>
             <a href="rent.php"><li>Rent</li></a>  
           </ul>
         </div>

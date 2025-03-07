@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email'] = "Enter a valid email address";
     if (empty($password) || strlen($password) < 6) $errors['password'] = "Password must be at least 6 characters";
     if ($password !== $confirm_password) $errors['confirm_password'] = "Passwords do not match";
-    if (empty($phone_number) || !preg_match("/^[0-9]{10}$/", $phone_number)) $errors['phone_number'] = "Enter a valid 10-digit phone_number number";
+    if (empty($phone_number) || !preg_match("/^[0-9]{10}$/", $phone_number)) $errors['phone_number'] = "Enter a valid 10-digit phone number";
 
     if ($user_role == "customer") {
         if (empty($flat_house_building) || empty($area_street_village) || empty($town_city_state_country)) {
@@ -66,61 +66,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+<?php include 'pages/header.php'; ?>
+<body class="sign-up-body">
+    <div class="sign-up-container">
+        <h1 class="sign-up-title">Create Account</h1>
+        
+        <?php if (!empty($errors)): ?>
+            <div class="sign-up-error">
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($_SESSION['success'])): ?>
+            <p class="sign-up-success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></p>
+        <?php endif; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Account</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 350px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #218838;
-        }
-        .error {
-            color: red;
-            font-size: 14px;
-        }
-        p.success {
-            text-align: center;
-            color: green;
-        }
-    </style>
+        <form method="POST" class="sign-up-form">
+            <h1>Create account</h1>
+            <div class="form-columns">
+                <!-- Left Column - Personal Information -->
+                <div class="form-column left-column">
+                    <h3 class="sign-up-section-title">Personal Information</h3>
+                    <input type="text" name="name" class="sign-up-input" placeholder="Full Name" required>
+                    <input type="email" name="email" class="sign-up-input" placeholder="Email" required>
+                    <input type="tel" name="phone_number" class="sign-up-input" placeholder="Phone Number" required>
+                    <input type="password" name="password" class="sign-up-input" placeholder="Password" required>
+                    <input type="password" name="confirm_password" class="sign-up-input" placeholder="Confirm Password" required>
+                    
+                    <select name="user_role" id="user_role" class="sign-up-select" required onchange="toggleFields()">
+                        <option value="customer">Customer</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    
+                    <!-- Admin Fields (Visible only for Admins) -->
+                    <div id="admin_fields" class="sign-up-admin-fields" style="display: none;">
+                        <h3 class="sign-up-section-title">Admin Verification</h3>
+                        <input type="text" name="admin_code" class="sign-up-input" placeholder="Enter Admin Code">
+                    </div>
+                </div>
+                
+                <!-- Right Column - Address Information -->
+                <div class="form-column right-column" id="address_fields">
+                    <h3 class="sign-up-section-title">Address</h3>
+                    <input type="text" name="flat_house_building" class="sign-up-input" placeholder="Flat, House no., Building, Apartment">
+                    <input type="text" name="area_street_village" class="sign-up-input" placeholder="Area, Street, Sector, Village">
+                    <input type="text" name="landmark" class="sign-up-input" placeholder="Landmark (Optional)">
+                    <input type="text" name="town_city_state_country" class="sign-up-input" placeholder="Town/City, State, Country">
+                </div>
+            </div>
+            
+            <!-- Centered Button -->
+            <div class="button-container">
+                <button type="submit" class="sign-up-button">Create Account</button>
+            </div>
+            <div class="form-last-redirect sign-up-redirect"> 
+                <p>If Already has an account? <a href="sign-in.php">Log-In</a></p>
+            </div>
+        </form>
+        
+    </div>
+    <?php include 'pages/footer.php'; ?>
+    
+   
+    
     <script>
         function toggleFields() {
             var userRole = document.getElementById("user_role").value;
@@ -136,54 +148,5 @@ $conn->close();
             }
         }
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1>Create Account</h1>
-        
-        <?php if (!empty($errors)): ?>
-            <div class="error">
-                <ul>
-                    <?php foreach ($errors as $error): ?>
-                        <li><?= htmlspecialchars($error) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (isset($_SESSION['success'])): ?>
-            <p class="success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></p>
-        <?php endif; ?>
-
-        <form method="POST">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="tel" name="phone_number" placeholder="phone_number Number" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-            
-            <select name="user_role" id="user_role" required onchange="toggleFields()">
-                <option value="customer">Customer</option>
-                <option value="admin">Admin</option>
-            </select>
-
-            <!-- Address Fields (Visible only for Customers) -->
-            <div id="address_fields">
-                <h3>Address</h3>
-                <input type="text" name="flat_house_building" placeholder="Flat, House no., Building, Apartment">
-                <input type="text" name="area_street_village" placeholder="Area, Street, Sector, Village">
-                <input type="text" name="landmark" placeholder="Landmark (Optional)">
-                <input type="text" name="town_city_state_country" placeholder="Town/City, State, Country">
-            </div>
-
-            <!-- Admin Fields (Visible only for Admins) -->
-            <div id="admin_fields" style="display: none;">
-                <h3>Admin Verification</h3>
-                <input type="text" name="admin_code" placeholder="Enter Admin Code">
-            </div>
-
-            <button type="submit">Create Account</button>
-        </form>
-    </div>
 </body>
 </html>

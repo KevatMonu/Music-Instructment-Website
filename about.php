@@ -146,8 +146,7 @@
     <h2>Visit Our Store</h2>
     <div class="store-details">
       <div class="map">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3107.5344928479843!2d-77.37768538256397!3d38.81548505552726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b64e96394b91ef%3A0xe2fb177a68ff8ba!2sMusic%20%26%20Arts!5e0!3m2!1sen!2sus!4v1709605054301!5m2!1sen!2sus" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <p class="map-link"><a href="https://maps.app.goo.gl/h6mJA4EwfNfCkZ7g8" target="_blank">View on Google Maps</a></p>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.0030997589285!2d73.7507627745495!3d18.578303871515914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2ba33f8d3d9e7%3A0xa5f95e0d5a1e2d0b!2sSus%2C%20Pune%2C%20Maharashtra%20411211%2C%20India!5e0!3m2!1sen!2sin!4v1709801000000!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="contact-info">
         <p><strong>Address:</strong> Land of Wand, Water Seven , East Blue-07</p>

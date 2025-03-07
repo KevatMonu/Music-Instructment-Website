@@ -68,10 +68,11 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
   <title>K&P Music Instrument Store</title>
   <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="./css/product.css">
-  <link rel="stylesheet" href="./css/about.css"/>
+  <link rel="stylesheet" href="./css/about.css" />
   <link rel="stylesheet" href="./css/sign-in-up.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/contact.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
     rel="stylesheet" />
@@ -111,9 +112,12 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
           <a href="contact.php">
             <li>Contact Us</li>
           </a>
-          <a href="sign-in.php">
-            <li>Sign In</li>
-          </a>
+          <?php if (!isset($_SESSION['user_id'])): ?>
+            <!-- Only show Sign In link when user is NOT logged in -->
+            <a href="sign-in.php">
+              <li>Sign In</li>
+            </a>
+          <?php endif; ?>
           <a href="rent.php">
             <li>Rent</li>
           </a>
@@ -121,15 +125,26 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
       </div>
     </div>
     <div class="nav2">
+      
       <div class="nav2-icon">
         <i class="fa-regular fa-heart"></i>
         <a href="cart.php" class="cart-link">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <?php if ($totalItems > 0): ?>
-                <span class="cart-count"><?php echo $totalItems; ?></span>
-            <?php endif; ?>
+          <i class="fa-solid fa-cart-shopping"></i>
+          <?php if ($totalItems > 0): ?>
+            <span class="cart-count"><?php echo $totalItems; ?></span>
+          <?php endif; ?>
         </a>
-        <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
+        <?php if (!isset($_SESSION['user_id'])): ?>
+          <!-- Show user icon but link to sign-in when not logged in -->
+          <a href="sign-in.php"><i class="fa-solid fa-user"></i></a>
+        <?php else: ?>
+          <!-- Link to dashboard when logged in -->
+          <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+            <a href="admin_dashboard.php"><i class="fa-solid fa-user-shield"></i></a>
+          <?php else: ?>
+            <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
+          <?php endif; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>
