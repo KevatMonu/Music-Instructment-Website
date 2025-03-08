@@ -106,6 +106,9 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
           <a href="contact.php">
             <li>Contact Us</li>
           </a>
+          <a href="chatbot.html">
+            <li>Recommendation</li>
+          </a>
           <?php if (!isset($_SESSION['user_id'])): ?>
             <a href="sign-in.php">
               <li>Sign In</li>

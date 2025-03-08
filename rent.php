@@ -108,132 +108,9 @@ $history_result = $history_stmt->get_result();
     <title>My Rentals</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/products.css">
+    <link rel="stylesheet" href="./css/rentals.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <style>
-        .rentals-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .rental-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .rental-image {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            margin-right: 20px;
-            border-radius: 4px;
-        }
-        .rental-details {
-            flex: 1;
-        }
-        .rental-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 15px;
-        }
-        .btn {
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            margin-left: 10px;
-            font-size: 14px;
-        }
-        .btn-return {
-            background-color: #f44336;
-        }
-        .btn-extend {
-            background-color: #2196F3;
-        }
-        .extend-form {
-            display: none;
-            margin-top: 10px;
-        }
-        .extend-form input {
-            padding: 8px;
-            width: 60px;
-            margin-right: 10px;
-        }
-        .rental-date {
-            color: #666;
-            font-size: 14px;
-        }
-        .rental-price {
-            font-weight: bold;
-            color: #e91e63;
-            font-size: 16px;
-            margin: 5px 0;
-        }
-        .rental-status {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .status-active {
-            background-color: #e8f5e9;
-            color: #4CAF50;
-        }
-        .status-returned {
-            background-color: #ffebee;
-            color: #f44336;
-        }
-        .rental-section {
-            margin-bottom: 40px;
-        }
-        .message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-        .success {
-            background-color: #dff0d8;
-            color: #3c763d;
-        }
-        .error {
-            background-color: #f2dede;
-            color: #a94442;
-        }
-        .days-remaining {
-            font-weight: bold;
-            color: #ff9800;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        .tab {
-            padding: 10px 20px;
-            background-color: #f1f1f1;
-            cursor: pointer;
-            border-radius: 4px 4px 0 0;
-            margin-right: 5px;
-        }
-        .tab.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-    </style>
 </head>
 <body>
 
@@ -298,9 +175,9 @@ $history_result = $history_stmt->get_result();
                         $is_overdue = $today > $end_date;
                     ?>
                     <div class="rental-card">
-                        <img src="<?php echo htmlspecialchars($rental['image']); ?>" alt="<?php echo htmlspecialchars($rental['name']); ?>" class="rental-image">
+                        <img src="<?php echo htmlspecialchars($rental['product_image']); ?>" alt="<?php echo htmlspecialchars($rental['product_name']); ?>" class="rental-image">
                         <div class="rental-details">
-                            <h3><?php echo htmlspecialchars($rental['name']); ?> (x<?php echo $rental['quantity']; ?>)</h3>
+                            <h3><?php echo htmlspecialchars($rental['product_name']); ?> (x<?php echo $rental['item_quantity']; ?>)</h3>
                             <span class="rental-status status-active">Active</span>
                             <p class="rental-date">
                                 Rented on: <?php echo date('F j, Y', strtotime($rental['rental_start'])); ?><br>
@@ -312,7 +189,7 @@ $history_result = $history_stmt->get_result();
                                 <?php endif; ?>
                             </p>
                             <p class="rental-price">
-                                ₹<?php echo number_format($rental['rental_price'], 2); ?>/day
+                                ₹<?php echo number_format($rental['rental_cost'], 2); ?>/day
                             </p>
                             
                             <div class="rental-actions">
@@ -344,23 +221,23 @@ $history_result = $history_stmt->get_result();
                 <?php if ($history_result->num_rows > 0): ?>
                     <?php while ($rental = $history_result->fetch_assoc()): ?>
                     <div class="rental-card">
-                        <img src="<?php echo htmlspecialchars($rental['image']); ?>" alt="<?php echo htmlspecialchars($rental['name']); ?>" class="rental-image">
+                        <img src="<?php echo htmlspecialchars($rental['product_image']); ?>" alt="<?php echo htmlspecialchars($rental['product_name']); ?>" class="rental-image">
                         <div class="rental-details">
-                            <h3><?php echo htmlspecialchars($rental['name']); ?> (x<?php echo $rental['quantity']; ?>)</h3>
+                            <h3><?php echo htmlspecialchars($rental['product_name']); ?> (x<?php echo $rental['item_quantity']; ?>)</h3>
                             <span class="rental-status status-returned">Returned</span>
                             <p class="rental-date">
                                 Rented on: <?php echo date('F j, Y', strtotime($rental['rental_start'])); ?><br>
                                 Returned on: <?php echo date('F j, Y', strtotime($rental['rental_end'])); ?>
                             </p>
                             <p class="rental-price">
-                                ₹<?php echo number_format($rental['rental_price'], 2); ?>/day
+                                ₹<?php echo number_format($rental['rental_cost'], 2); ?>/day
                             </p>
                             <?php
                                 // Calculate total days rented
                                 $start_date = new DateTime($rental['rental_start']);
                                 $end_date = new DateTime($rental['rental_end']);
                                 $days_rented = $start_date->diff($end_date)->days;
-                                $total_cost = $days_rented * $rental['rental_price'] * $rental['quantity'];
+                                $total_cost = $days_rented * $rental['rental_cost'] * $rental['item_quantity'];
                             ?>
                             <p>Total rental duration: <?php echo $days_rented; ?> days</p>
                             <p>Total cost: ₹<?php echo number_format($total_cost, 2); ?></p>
