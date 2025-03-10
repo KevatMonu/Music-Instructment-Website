@@ -71,54 +71,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        .edit-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        .edit-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .edit-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .edit-container button {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .edit-container button:hover {
-            background: #0056b3;
-        }
-        .profile-img {
-            display: block;
-            margin: 10px auto;
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="css/edit_user.css">
 </head>
 <body>
 

@@ -1,16 +1,16 @@
-<?php
-session_start();
+<?php 
+session_start(); 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     echo "<script>alert('Unauthorized access!'); window.location.href='sign-in.php';</script>";
-    exit();
+    exit(); 
 }
 
-$conn = new mysqli("localhost", "root", "", "musicstore_database", 3306);
+$conn = new mysqli("localhost", "root", "", "musicstore_database", 3306); 
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error); 
 }
 
-$full_name = htmlspecialchars($_SESSION['full_name']);
+$full_name = htmlspecialchars($_SESSION['full_name']); 
 ?>
 
 <!DOCTYPE html>
@@ -19,91 +19,226 @@ $full_name = htmlspecialchars($_SESSION['full_name']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .dashboard-container {
-            display: flex;
-            height: 100vh;
-        }
-        .sidebar {
-            width: 250px;
-            background: #007bff;
-            color: white;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar ul li {
-            padding: 10px;
-            border-bottom: 1px solid #0056b3;
-        }
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            display: block;
-        }
-        .sidebar ul li a:hover {
-            background: #0056b3;
-            border-radius: 5px;
-            padding: 10px;
-        }
-        .main-content {
-            flex: 1;
-            padding: 20px;
-        }
-        .logout-btn {
-            margin-top: 20px;
-            background: red;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px;
-        }
-        .logout-btn a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .logout-btn a:hover {
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    
 </head>
 <body>
 
 <div class="dashboard-container">
     <div class="sidebar">
-        <h2>Admin Panel</h2>
-        <ul>
-            <li><a href="admin_dashboard.php">Dashboard</a></li>
-            <li><a href="manage_users.php">Manage Users</a></li>
-            <li><a href="manage_categories.php">Manage Categories</a></li>
-            <li><a href="manage_products.php">Manage Products</a></li>
-            <li><a href="manage_orders.php">View Orders</a></li>
-            <li><a href="reports.php">Reports</a></li>
+        <div class="sidebar-header">
+            <div class="brand">
+                <i class="fas fa-music"></i>
+                <span>Music Store</span>
+            </div>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="admin_dashboard.php" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="manage_users.php" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Manage Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="manage_categories.php" class="nav-link">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="manage_products.php" class="nav-link">
+                    <i class="fas fa-guitar"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="manage_orders.php" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.php" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+            </li>
         </ul>
+        
         <div class="logout-btn">
-            <a href="logout.php">Logout</a>
+            <a href="logout.php">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </div>
     </div>
-
+    
     <div class="main-content">
-        <h1>Welcome, <?php echo $full_name; ?>!</h1>
-        <p>This is your admin dashboard. Use the sidebar to navigate.</p>
+        <div class="header">
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <h1 class="page-title">Admin Dashboard</h1>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <?php echo substr($full_name, 0, 1); ?>
+                </div>
+                <div class="user-name"><?php echo $full_name; ?></div>
+            </div>
+        </div>
+        
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="card-title">Total Users</div>
+                <div class="card-value">
+                    <?php
+                    $userCount = 0;
+                    $userQuery = "SELECT COUNT(*) as count FROM users";
+                    $userResult = $conn->query($userQuery);
+                    if ($userResult && $userResult->num_rows > 0) {
+                        $userCount = $userResult->fetch_assoc()['count'];
+                    }
+                    echo $userCount;
+                    ?>
+                </div>
+                <i class="fas fa-users card-icon"></i>
+                <div class="card-footer">
+                    <i class="fas fa-user"></i>&nbsp; Registered users
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="card-title">Total Products</div>
+                <div class="card-value">
+                    <?php
+                    $prodCount = 0;
+                    $prodQuery = "SELECT COUNT(*) as count FROM products";
+                    $prodResult = $conn->query($prodQuery);
+                    if ($prodResult && $prodResult->num_rows > 0) {
+                        $prodCount = $prodResult->fetch_assoc()['count'];
+                    }
+                    echo $prodCount;
+                    ?>
+                </div>
+                <i class="fas fa-guitar card-icon"></i>
+                <div class="card-footer">
+                    <i class="fas fa-guitar"></i>&nbsp; Available products
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="card-title">Recent Orders</div>
+                <div class="card-value">
+                    <?php
+                    $orderCount = 0;
+                    
+                    // Check if orders table exists
+                    $tableCheckQuery = "SHOW TABLES LIKE 'orders'";
+                    $tableExists = $conn->query($tableCheckQuery);
+                    
+                    if ($tableExists && $tableExists->num_rows > 0) {
+                        // Just count all orders if we can't filter by date
+                        $orderQuery = "SELECT COUNT(*) as count FROM orders";
+                        $orderResult = $conn->query($orderQuery);
+                        if ($orderResult && $orderResult->num_rows > 0) {
+                            $orderCount = $orderResult->fetch_assoc()['count'];
+                        }
+                    }
+                    
+                    echo $orderCount;
+                    ?>
+                </div>
+                <i class="fas fa-shopping-cart card-icon"></i>
+                <div class="card-footer">
+                    <i class="fas fa-clock"></i>&nbsp; Total orders
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="card-title">Total Revenue</div>
+                <div class="card-value">
+                    <?php
+                    $revenue = 0;
+                    
+                    // Check if orders table exists
+                    $tableCheckQuery = "SHOW TABLES LIKE 'orders'";
+                    $tableExists = $conn->query($tableCheckQuery);
+                    
+                    if ($tableExists && $tableExists->num_rows > 0) {
+                        // Look for columns like 'total_amount', 'amount', etc.
+                        $columnCheckQueries = [
+                            "SHOW COLUMNS FROM orders LIKE 'total_amount'",
+                            "SHOW COLUMNS FROM orders LIKE 'total'",
+                            "SHOW COLUMNS FROM orders LIKE 'amount'",
+                            "SHOW COLUMNS FROM orders LIKE 'price'"
+                        ];
+                        
+                        $amountColumn = null;
+                        foreach ($columnCheckQueries as $query) {
+                            $columnExists = $conn->query($query);
+                            if ($columnExists && $columnExists->num_rows > 0) {
+                                $column = $columnExists->fetch_assoc();
+                                $amountColumn = $column['Field'];
+                                break;
+                            }
+                        }
+                        
+                        if ($amountColumn) {
+                            $revenueQuery = "SELECT SUM($amountColumn) as total FROM orders";
+                            $revenueResult = $conn->query($revenueQuery);
+                            if ($revenueResult && $revenueResult->num_rows > 0) {
+                                $row = $revenueResult->fetch_assoc();
+                                // Check if 'total' is null before using it
+                                if ($row['total'] !== null) {
+                                    $revenue = $row['total'];
+                                }
+                            }
+                        }
+                    }
+                    
+                    echo '₹' . number_format((float)$revenue, 2);
+                    ?>
+                </div>
+                <i class="fa-solid fa-indian-rupee-sign card-icon"></i>
+                <div class="card-footer">
+                <i class="fa-solid fa-indian-rupee-sign"></i></i>&nbsp; All time revenue
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="action-buttons">
+                <a href="admin_add_product.php" class="action-btn">
+                    <i class="fas fa-plus"></i> Add Product
+                </a>
+                <a href="admin_add_categories.php" class="action-btn">
+                    <i class="fas fa-folder-plus"></i> Add Category
+                </a>
+                
+            </div>
+        </div>
+        
+        <div class="recent-activity">
+            <!-- You can add recent activities or orders here -->
+        </div>
     </div>
 </div>
+
+<script>
+    // Toggle sidebar on mobile
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        document.querySelector('.sidebar').classList.toggle('active');
+    });
+</script>
 
 </body>
 </html>

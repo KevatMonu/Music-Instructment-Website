@@ -1,0 +1,343 @@
+@font-face {
+    font-family: "Bold";
+    src: url(../assets/font/Bebas_Neue/BebasNeue-Regular.ttf);
+}
+  
+@font-face {
+    font-family: "font";
+    src: url(../assets/font/Roboto_Condensed/RobotoCondensed-Regular.ttf);
+}
+  
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "font";
+    box-sizing: border-box;
+}
+  
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+header h1 {
+    font-family: "Bold";
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.back-button {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: #ff7f50;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    color: #e56b3e;
+}
+
+/* Chat container styles */
+#chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-height: 80vh;
+}
+
+#chat-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #222;
+    color: #fff;
+    gap: 10px;
+}
+
+#chat-header i {
+    font-size: 1.5rem;
+    color: #ff7f50;
+}
+
+#chat-header h2 {
+    font-family: "Bold";
+    font-size: 1.5rem;
+    flex: 1;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    background-color: #ff7f50;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #ccc;
+}
+
+/* Chat box */
+#chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 12px 15px;
+    border-radius: 15px;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.user {
+    align-self: flex-end;
+    background-color: #ff7f50;
+    color: white;
+    border-bottom-right-radius: 3px;
+}
+
+.message.bot {
+    align-self: flex-start;
+    background-color: #f1f1f1;
+    color: #333;
+    border-bottom-left-radius: 3px;
+}
+
+.message-content {
+    margin-bottom: 5px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.5);
+    align-self: flex-end;
+    margin-top: 5px;
+}
+
+.message.user .message-time {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: none;
+    align-self: flex-start;
+    background-color: #f1f1f1;
+    padding: 12px 15px;
+    border-radius: 15px;
+    border-bottom-left-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #666;
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+    margin-right: 0;
+}
+
+@keyframes typing {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Chat input */
+#chat-input-container {
+    display: flex;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+}
+
+#user-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#user-input:focus {
+    border-color: #ff7f50;
+}
+
+#send-button {
+    width: 45px;
+    height: 45px;
+    margin-left: 10px;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#send-button:hover:not(:disabled) {
+    background-color: #e56b3e;
+    transform: scale(1.05);
+}
+
+#send-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Quick actions */
+.quick-actions {
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-family: "Bold";
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background-color: #ff7f50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.action-btn:hover {
+    background-color: #e56b3e;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px 0;
+    color: #888;
+    font-size: 0.8rem;
+    margin-top: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        height: 100vh;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    #chat-container {
+        max-height: 75vh;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+}

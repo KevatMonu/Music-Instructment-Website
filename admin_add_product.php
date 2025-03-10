@@ -158,49 +158,24 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link rel="stylesheet" href="css/add_product.css">
-    <style>
-        .rental-section {
-            border-top: 1px solid #ccc;
-            margin-top: 20px;
-            padding-top: 15px;
-        }
-        .rental-options {
-            display: none;
-        }
-        .error-message {
-            color: #d9534f;
-            background-color: #f2dede;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-        .error-message ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .success-message {
-            color: #5cb85c;
-            background-color: #dff0d8;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .required::after {
-            content: " *";
-            color: red;
-        }
-    </style>
+
 </head>
 <body>
 <div class="container">
+<div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
+            <li><a href="manage_users.php">Manage Users</a></li>
+            <li><a href="manage_categories.php">Manage Categories</a></li>
+            <li><a href="manage_products.php">Manage Products</a></li>
+            <li><a href="manage_orders.php">View Orders</a></li>
+            <li><a href="reports.php">Reports</a></li>
+        </ul>
+        <div class="logout-btn">
+            <a href="logout.php">Logout</a>
+        </div>
+    </div>
     <h2>Add New Product</h2>
     <?php echo $message; ?>
     <form action="" method="POST" enctype="multipart/form-data">
@@ -260,21 +235,7 @@ $conn->close();
         </div>
         
         <!-- Rental Options Section -->
-        <div class="rental-section">
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="is_rentable" id="is_rentable" value="1" 
-                           <?php echo isset($is_rentable) && $is_rentable ? 'checked' : ''; ?>> 
-                    This product is available for rent
-                </label>
-            </div>
-            
-            <div id="rental-options" class="rental-options form-group">
-                <label for="rental_cost" id="rental_cost_label">Rental Cost (per day)</label>
-                <input type="number" id="rental_cost" step="0.01" name="rental_cost" placeholder="Enter rental cost" min="0.01"
-                       value="<?php echo isset($rental_cost) && $rental_cost > 0 ? htmlspecialchars($rental_cost) : ''; ?>">
-            </div>
-        </div>
+       
         
         <button type="submit">Add Product</button>
     </form>
