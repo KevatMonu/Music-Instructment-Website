@@ -112,7 +112,8 @@ function getStatusBadgeClass($status) {
                     <li><a href="user_dashboard.php" class="nav-link active"><i class="lucide-home"></i> <span>Dashboard</span></a></li>
                     <li><a href="products.php" class="nav-link"><i class="lucide-package"></i> <span>Browse Products</span></a></li>
                     <li><a href="cart.php" class="nav-link"><i class="lucide-shopping-cart"></i> <span>My Cart</span></a></li>
-                    <li><a href="user_order_detail.php" class="nav-link"><i class="lucide-clipboard-list"></i> <span>My Orders</span></a></li>
+                    <li><a href="user_order_detail.php" class="nav-link"><i class="lucide-clipboard-list"></i> <span>Ordertracking</span></a></li>
+                    <li><a href="ordertracking.php" class="nav-link"><i class="lucide-user"></i> <span>My Profile</span></a></li>
                     <li><a href="profile.php" class="nav-link"><i class="lucide-user"></i> <span>My Profile</span></a></li>
                     <li><a href="support.php" class="nav-link"><i class="lucide-help-circle"></i> <span>Help & Support</span></a></li>
                 </ul>
