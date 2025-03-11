@@ -121,16 +121,14 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
               <li>Sign In</li>
             </a>
           <?php endif; ?>
-          <a href="rent.php">
-            <li>Rent</li>
-          </a>
+
         </ul>
       </div>
     </div>
     <div class="nav2">
       
       <div class="nav2-icon">
-        <i class="fa-regular fa-heart"></i>
+
         <a href="cart.php" class="cart-link">
           <i class="fa-solid fa-cart-shopping"></i>
           <?php if ($totalItems > 0): ?>

@@ -297,7 +297,7 @@ if ($order_id > 0) {
             <div class="invoice-container" id="invoice-content">
                 <div class="invoice-header">
                     <div class="invoice-logo">
-                        <i class="fas fa-music"></i> Music Store
+                        <i class="fas fa-music"></i> K&P Music
                     </div>
                     <div class="invoice-info">
                         <div>Invoice #: <?php echo htmlspecialchars($invoice_data['invoice_number'] ?? ''); ?></div>

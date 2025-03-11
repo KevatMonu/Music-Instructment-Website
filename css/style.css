@@ -105,6 +105,7 @@ body {
 .nav2-icon {
   display: flex;
   gap: 20px;
+  margin-right: 2vw;
 }
 
 .nav2-icon a {
@@ -272,12 +273,12 @@ width: 100%;
 
 
 
- button {
+ .button {
   font-family: 'Bold';
   font-size: 1.5vw;
   font-weight: 400;
-  margin-top: 2vw;
   padding: 0.4vw 2vw;
+  margin-top: 2vw;
   text-align: center;
   background-color: tomato;
   border-radius: 5vw;
@@ -289,7 +290,7 @@ width: 100%;
   transition: all 0.3s ease-in-out;
 }
 
- button::before {
+ .button::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -302,7 +303,7 @@ width: 100%;
   transition: opacity 0.3s ease-in-out;
 }
 
- button::after {
+ .button::after {
   content: 'SHOP NOW';
   position: absolute;
   color: #fff;
@@ -319,18 +320,18 @@ width: 100%;
 }
 
 
- button:hover {
+ .button:hover {
   transform: scale(1.1);
   color: #000;
   background: #fff;
   box-shadow: 0px 0px 15px rgba(255, 99, 71, 0.7);
 }
 
- button:hover::before {
+ .button:hover::before {
   opacity: 1;
 }
 
- button:hover::after {
+ .button:hover::after {
   left: 0;
 }
 

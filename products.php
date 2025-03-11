@@ -216,9 +216,7 @@ $productCount = $result->num_rows;
                             <li>Sign In</li>
                         </a>
                     <?php endif; ?>
-                    <a href="rent.php">
-                        <li>Rent</li>
-                    </a>
+                   
                 </ul>
             </div>
         </div>

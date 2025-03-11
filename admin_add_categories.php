@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Check if image is uploaded
         if (!empty($_FILES['category_image']['name']) && $_FILES['category_image']['error'] == 0) {
-            $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+            // Expanded list of allowed image extensions
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg', 'tiff', 'ico', 'heic'];
             $filename = $_FILES['category_image']['name'];
             $filetype = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
@@ -57,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $messageType = "error";
                 }
             } else {
-                $message = "Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.";
+                $message = "Invalid file type. Allowed types: JPG, JPEG, PNG, GIF, WEBP, BMP, SVG, TIFF, ICO, HEIC";
                 $messageType = "error";
             }
         }
@@ -132,6 +133,7 @@ $full_name = $_SESSION['full_name'];
                 <div class="form-group">
                     <label for="category_image">Category Image:</label>
                     <input type="file" id="category_image" name="category_image" accept="image/*">
+                    <small>Allowed formats: JPG, JPEG, PNG, GIF, WEBP, BMP, SVG, TIFF, ICO, HEIC</small>
                 </div>
 
                 <button type="submit" class="submit-btn">Add Category</button>
