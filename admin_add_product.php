@@ -237,21 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <!-- Rental Options Section -->
-            <div class="form-group checkbox-group">
-                <input type="checkbox" id="is_rentable" name="is_rentable" <?php echo isset($is_rentable) && $is_rentable ? 'checked' : ''; ?>>
-                <label for="is_rentable">This product is available for rent</label>
-            </div>
-            
-            <div id="rental-options" style="display: <?php echo isset($is_rentable) && $is_rentable ? 'block' : 'none'; ?>;">
-                <div class="form-group">
-                    <label for="rental_cost" id="rental_cost_label" <?php echo isset($is_rentable) && $is_rentable ? 'class="required"' : ''; ?>>
-                        Rental Cost (per day)
-                    </label>
-                    <input type="number" id="rental_cost" step="0.01" name="rental_cost" placeholder="Enter rental cost" min="0.01"
-                           value="<?php echo isset($rental_cost) && $rental_cost > 0 ? htmlspecialchars($rental_cost) : ''; ?>"
-                           <?php echo isset($is_rentable) && $is_rentable ? 'required' : ''; ?>>
-                </div>
-            </div>
+    
             
             <button type="submit">Add Product</button>
         </form>

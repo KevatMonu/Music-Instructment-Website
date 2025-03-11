@@ -78,7 +78,7 @@ $full_name = $_SESSION['full_name'];
                         echo "<td>" . $row["offer_ref"] . "</td>";
                         echo "<td>" . $row["discount_amount"] . "</td>";
                         echo "<td>
-                                    <a href='edit_order.php?id=" . $row["order_id"] . "'><button class='action-btn'>Edit</button></a>
+                                   
                                     <a href='delete_order.php?id=" . $row["order_id"] . "' onclick='return confirm(\"Are you sure you want to delete this order?\")'><button class='action-btn delete-btn'>Delete</button></a>
                                 </td>";
                         echo "</tr>";

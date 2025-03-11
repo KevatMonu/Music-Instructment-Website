@@ -114,7 +114,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
               <li>Sign In</li>
             </a>
           <?php endif; ?>
-            
+
         </ul>
       </div>
     </div>
@@ -136,7 +136,8 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
       <div class="hero-banner">
         <div class="hero-text">
           <h1>Find your perfect Sound </h1>
-          <p>Professional Music Gear for all Levels </p>
+          <p>Explore Our Instructment Collections
+          </p>
           <a href="products.php"> <button class="shop-now-btn  button">Shop-Now</button></a>
         </div>
       </div>
@@ -146,66 +147,67 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
       <div class="shop-cat">
         <div class="cat-head">
           <h1>Our Collections</h1>
+          <p>Explore Our Instructment Collections</p>
         </div>
         <div class="product-swipe">
           <button class="swiper-button prev-btn">
             <i class="ri-arrow-left-s-line"></i>
           </button>
           <div class="product-list">
-    <?php
-    // Database connection
-    $servername = "localhost";
-    $username = "root";
-    $password = ""; // Default WAMP password is empty
-    $dbname = "musicstore_database"; // Replace with your actual database name
-    
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    
-    // Query to fetch categories
-    $sql = "SELECT category_id, category_name, category_description, category_image, category_image_type FROM categories";
-    $result = $conn->query($sql);
-    
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $categoryId = $row["category_id"];
-            $categoryName = $row["category_name"];
-            $categoryImage = $row["category_image"];
-            
-            // Set default image path
-            $imageSrc = "assets/default-image.jpg";
-            
-            // If we have an image path in the database, try to use it
-            if (!empty($categoryImage)) {
-                // Method 1: Try direct path
-                if (file_exists($categoryImage)) {
+            <?php
+            // Database connection
+            $servername = "localhost";
+            $username = "root";
+            $password = ""; // Default WAMP password is empty
+            $dbname = "musicstore_database"; // Replace with your actual database name
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+              die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Query to fetch categories
+            $sql = "SELECT category_id, category_name, category_description, category_image, category_image_type FROM categories";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                $categoryId = $row["category_id"];
+                $categoryName = $row["category_name"];
+                $categoryImage = $row["category_image"];
+
+                // Set default image path
+                $imageSrc = "assets/default-image.jpg";
+
+                // If we have an image path in the database, try to use it
+                if (!empty($categoryImage)) {
+                  // Method 1: Try direct path
+                  if (file_exists($categoryImage)) {
                     $imageSrc = $categoryImage;
-                } 
-                // Method 2: Try with document root (for web paths)
-                else if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $categoryImage)) {
+                  }
+                  // Method 2: Try with document root (for web paths)
+                  else if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $categoryImage)) {
                     $imageSrc = $categoryImage;
-                }
-                // Method 3: If paths start with 'uploads/' but that folder is elsewhere
-                else if (strpos($categoryImage, 'uploads/') === 0) {
+                  }
+                  // Method 3: If paths start with 'uploads/' but that folder is elsewhere
+                  else if (strpos($categoryImage, 'uploads/') === 0) {
                     // Try looking for the file in the root directory
                     $altPath = str_replace('uploads/', 'uploads/', $categoryImage);
                     if (file_exists($altPath)) {
-                        $imageSrc = $altPath;
+                      $imageSrc = $altPath;
                     }
-                }
-                // If none of the above worked but we have a path, just use it
-                // This might work if the web server can see it but PHP can't
-                else {
+                  }
+                  // If none of the above worked but we have a path, just use it
+                  // This might work if the web server can see it but PHP can't
+                  else {
                     $imageSrc = $categoryImage;
+                  }
                 }
-            }
-            
-            echo '<div class="product-item">
+
+                echo '<div class="product-item">
                 <div class="product-img">
                     <img src="' . $imageSrc . '" alt="' . $categoryName . '" />
                 </div>
@@ -214,15 +216,15 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
                     <a href="products.php?category=' . $categoryId . '"><button class="shop-btn">Shop Now</button></a>
                 </div>
             </div>';
-        }
-    } else {
-        echo "No categories found";
-    }
-    
-    // Close connection
-    $conn->close();
-    ?>
-</div>
+              }
+            } else {
+              echo "No categories found";
+            }
+
+            // Close connection
+            $conn->close();
+            ?>
+          </div>
           <button class="swiper-button next-btn">
             <i class="ri-arrow-right-s-line"></i>
           </button>

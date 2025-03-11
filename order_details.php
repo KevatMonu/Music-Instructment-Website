@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "music_website");
+$conn = new mysqli("localhost", "root", "", "musicstore_database");
 
 // Check Connection
 if ($conn->connect_error) {

@@ -266,10 +266,6 @@ width: 100%;
     text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.3), 5px 5px 15px rgba(0, 0, 0, 0.7);
 }
 
-.hero-text p{
-  font-size: 3vw;
-  font-family: 'font';
-}
 
 
 
@@ -362,6 +358,7 @@ width: 100%;
   font-weight: 500;
   text-transform: capitalize;
   margin-left: 1vw;
+  margin-top: 3vw;
 }
 
 .cat:hover {
