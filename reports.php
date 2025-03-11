@@ -43,9 +43,6 @@ $current_report = isset($_GET['report']) ? $_GET['report'] : '';
 </head>
 
 <body>
-    <header>
-        <h1>K&P Music Management Reports</h1>
-    </header>
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="brand">
@@ -100,6 +97,9 @@ $current_report = isset($_GET['report']) ? $_GET['report'] : '';
             </a>
         </div>
     </div>
+    <header>
+        <h1>K&P Music Management Reports</h1>
+    </header>
     <div class="container">
         <div class="dashboard-summary">
             <div class="summary-card">
