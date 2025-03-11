@@ -69,7 +69,6 @@ section {
 
 /* Hero section */
 .hero-section {
-  margin-top: 2vw;
   background-image: url(../assets/home/image/about_bg.jpeg);
   background-size: contain;
   background-position: center;

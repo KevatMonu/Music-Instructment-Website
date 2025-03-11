@@ -150,7 +150,14 @@ $totalItems = array_sum($_SESSION['cart']);
                             <div>
                                 <?php
                                 if (!empty($item['image'])) {
-                                    echo '<img src="data:' . $item['image_type'] . ';base64,' . base64_encode($item['image']) . '" alt="' . htmlspecialchars($item['name']) . '" class="cart-item-image">';
+                                    // Check if the product_image is a file path (starts with 'uploads/')
+                                    if (strpos($item['image'], 'uploads/') === 0) {
+                                        // It's a file path, display the image using the path
+                                        echo '<img src="' . htmlspecialchars($item['image']) . '" alt="' . htmlspecialchars($item['name']) . '" class="cart-item-image">';
+                                    } else {
+                                        // It's a BLOB, use base64 encoding (for backward compatibility)
+                                        echo '<img src="data:' . $item['image_type'] . ';base64,' . base64_encode($item['image']) . '" alt="' . htmlspecialchars($item['name']) . '" class="cart-item-image">';
+                                    }
                                 } else {
                                     echo '<img src="assets/no-image.png" alt="No Image" class="cart-item-image">';
                                 }

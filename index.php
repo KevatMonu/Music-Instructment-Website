@@ -145,74 +145,69 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
     </div>
 
     <div id="page2">
-      <div class="shop-cat">
-        <div class="cat-head">
-          <h1>Our Collections</h1>
-
-        </div>
-
-        <div class="product-swipe">
-          <button class="swiper-button prev-btn">
-            <i class="ri-arrow-left-s-line"></i>
-          </button>
-          <div class="product-list">
-            <?php
-            // Database connection
-            $servername = "localhost";
-            $username = "root";
-            $password = ""; // Default WAMP password is empty
-            $dbname = "musicstore_database"; // Replace with your actual database name
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Check connection
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            }
-
-            // Query to fetch categories
-            $sql = "SELECT category_id, category_name, category_description, category_image FROM categories";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-              while ($row = $result->fetch_assoc()) {
-                $categoryImage = $row["category_image"];
-
-                if ($categoryImage !== null) {
-                  $imageData = base64_encode($categoryImage);
-                  $imageSrc = "data:image/jpeg;base64," . $imageData;
-                } else {
-                  // Handle the case where the image is null
-                  // Either set a default image or skip the image display
-                  $imageSrc = "assets/default-image.jpg"; // Replace with your default image path
-                  // or
-                  // $imageSrc = ""; // Skip the image entirely
-                }
-
-                echo '<div class="product-item">
-                      <div class="product-img">
-                          <img src="' . $imageSrc . '" alt="' . $row["category_name"] . '" />
-                      </div>
-                      <div class="product-text">
-                          <h1>' . $row["category_name"] . '</h1>
-                          <a href="products.php?category=' . $row["category_id"] . '"><button class="shop-btn">Shop Now</button></a>
-                      </div>
-                  </div>';
-              }
-            } else {
-              echo "No categories found";
-            }
-
-            // Close connection
-            $conn->close();
-            ?>
-          </div>
-          <button class="swiper-button next-btn">
-            <i class="ri-arrow-right-s-line"></i>
-          </button>
-        </div>
-      </div>
+    <div class="shop-cat">
+  <div class="cat-head">
+    <h1>Our Collections</h1>
+  </div>
+  <div class="product-swipe">
+    <button class="swiper-button prev-btn">
+      <i class="ri-arrow-left-s-line"></i>
+    </button>
+    <div class="product-list">
+      <?php
+      // Database connection
+      $servername = "localhost";
+      $username = "root";
+      $password = ""; // Default WAMP password is empty
+      $dbname = "musicstore_database"; // Replace with your actual database name
+      
+      // Create connection
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      
+      // Check connection
+      if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+      }
+      
+      // Query to fetch categories
+      $sql = "SELECT category_id, category_name, category_description, category_image FROM categories";
+      $result = $conn->query($sql);
+      
+      if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+          $categoryImage = $row["category_image"];
+          
+          if ($categoryImage !== null && file_exists($categoryImage)) {
+            // Use the file path directly
+            $imageSrc = $categoryImage;
+          } else {
+            // Handle the case where the image is null or file doesn't exist
+            $imageSrc = "assets/default-image.jpg"; // Replace with your default image path
+          }
+          
+          echo '<div class="product-item">
+                <div class="product-img">
+                    <img src="' . $imageSrc . '" alt="' . $row["category_name"] . '" />
+                </div>
+                <div class="product-text">
+                    <h1>' . $row["category_name"] . '</h1>
+                    <a href="products.php?category=' . $row["category_id"] . '"><button class="shop-btn">Shop Now</button></a>
+                </div>
+            </div>';
+        }
+      } else {
+        echo "No categories found";
+      }
+      
+      // Close connection
+      $conn->close();
+      ?>
+    </div>
+    <button class="swiper-button next-btn">
+      <i class="ri-arrow-right-s-line"></i>
+    </button>
+  </div>
+</div>
       <div class="line"></div>
 
       <div class="best-sell">
@@ -647,6 +642,21 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
         });
       });
     });
+    // Add this to your JavaScript file
+document.addEventListener('DOMContentLoaded', function() {
+  // Add menu toggle button to the DOM
+  const nav1 = document.querySelector('.nav1');
+  const menuToggle = document.createElement('button');
+  menuToggle.className = 'menu-toggle';
+  menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+  nav1.prepend(menuToggle);
+  
+  // Toggle navigation menu on mobile
+  menuToggle.addEventListener('click', function() {
+    const navItems = document.getElementById('nav-item');
+    navItems.classList.toggle('active');
+  });
+});
   </script>
 </body>
 

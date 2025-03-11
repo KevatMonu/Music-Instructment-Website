@@ -69,7 +69,7 @@ $conn->close();
 <?php include 'pages/header.php'; ?>
 <body class="sign-up-body">
     <div class="sign-up-container">
-        <h1 class="sign-up-title">Create Account</h1>
+      
         
         <?php if (!empty($errors)): ?>
             <div class="sign-up-error">

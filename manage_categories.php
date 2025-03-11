@@ -72,19 +72,21 @@ $full_name = $_SESSION['full_name'];
                         echo "<td>" . $row["category_description"] . "</td>";
                         echo "<td>";
                         
-                        // Check if image data exists
-                        if(!empty($row["category_image"])) {
-                            // For binary data, create a data URI
-                            $image_data = $row["category_image"];
-                            // Try to determine mime type from binary data
-                            $finfo = new finfo(FILEINFO_MIME_TYPE);
-                            $mime_type = $finfo->buffer($image_data);
-                            
-                            // Create base64 encoded string
-                            $base64 = base64_encode($image_data);
-                            echo "<img src='data:$mime_type;base64,$base64' alt='" . $row["category_name"] . "' class='category-img'>";
+                        // Check if image path exists and file exists
+                        if(!empty($row["category_image"]) && file_exists($row["category_image"])) {
+                            // Direct file path approach
+                            echo "<img src='" . $row["category_image"] . "' alt='" . $row["category_name"] . "' class='category-img'>";
                         } else {
-                            echo "No image";
+                            // Check if we have legacy BLOB data
+                            if(isset($row["category_image"]) && is_resource($row["category_image"])) {
+                                // Handle BLOB data from legacy records
+                                $image_data = $row["category_image"];
+                                $mime_type = $row["category_image_type"] ?? 'image/jpeg';
+                                $base64 = base64_encode(stream_get_contents($image_data));
+                                echo "<img src='data:$mime_type;base64,$base64' alt='" . $row["category_name"] . "' class='category-img'>";
+                            } else {
+                                echo "No image";
+                            }
                         }
                         
                         echo "</td>";

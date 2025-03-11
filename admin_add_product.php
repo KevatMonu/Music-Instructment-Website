@@ -1,16 +1,11 @@
 <?php
 session_start();
+require 'db_connection.php'; // Include your database connection file
 
 // Enable detailed error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-// Database Connection
-$conn = new mysqli("localhost", "root", "", "musicstore_database");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $message = "";
 
@@ -110,45 +105,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (!in_array($imageExtension, $allowedExtensions)) {
             $message = "<p class='error-message'>Invalid image format! Only JPG, PNG, GIF, WEBP, SVG allowed.</p>";
-        } elseif ($image['size'] > 5000000) { // 5MB limit
+        } elseif ($image['size'] > 500000000) { // 5MB limit
             $message = "<p class='error-message'>File is too large! Max size: 5MB.</p>";
         } else {
-            error_log("Image validation passed, proceeding with database insertion");
+            error_log("Image validation passed, proceeding with file storage");
             
-            // Read image content
-            $imageContent = file_get_contents($image['tmp_name']);
+            // Create uploads directory if it doesn't exist
+            $target_dir = "uploads/";
+            if (!file_exists($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+            
+            // Generate unique filename to prevent overwriting
+            $filename = uniqid() . '_' . basename($image['name']);
+            $target_file = $target_dir . $filename;
             $imageType = $image['type'];
             
             // Begin transaction
             $conn->begin_transaction();
             
             try {
-                // Insert Product into Database
-                $stmt = $conn->prepare("INSERT INTO products (product_name, product_description, category_ref, product_price, rental_cost, stock_quantity, product_image, image_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssiddibs", $name, $description, $category_ref, $price, $rental_cost, $stock_quantity, $imageContent, $imageType);
-                
-                if ($stmt->execute()) {
-                    $conn->commit();
-                    $message = "<p class='success-message'>Product added successfully!</p>";
-                    error_log("Product added successfully");
+                // Move uploaded file to target directory
+                if (move_uploaded_file($image['tmp_name'], $target_file)) {
+                    // Insert Product into Database with file path instead of blob
+                    $stmt = $conn->prepare("INSERT INTO products (product_name, product_description, category_ref, product_price, rental_cost, stock_quantity, product_image, image_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssiddisd", $name, $description, $category_ref, $price, $rental_cost, $stock_quantity, $target_file, $imageType);
                     
-                    // Reset form after successful submission
-                    $name = $description = '';
-                    $category_ref = $price = $rental_cost = $stock_quantity = 0;
-                    $is_rentable = 0;
+                    if ($stmt->execute()) {
+                        $conn->commit();
+                        $message = "<p class='success-message'>Product added successfully!</p>";
+                        error_log("Product added successfully");
+                        
+                        // Reset form after successful submission
+                        $name = $description = '';
+                        $category_ref = $price = $rental_cost = $stock_quantity = 0;
+                        $is_rentable = 0;
+                    } else {
+                        throw new Exception("Error adding product: " . $stmt->error);
+                    }
+                    $stmt->close();
                 } else {
-                    throw new Exception("Error adding product: " . $stmt->error);
+                    throw new Exception("Failed to move uploaded file.");
                 }
-                $stmt->close();
             } catch (Exception $e) {
                 $conn->rollback();
                 $message = "<p class='error-message'>" . $e->getMessage() . "</p>";
-                error_log("Exception during database insertion: " . $e->getMessage());
+                error_log("Exception during processing: " . $e->getMessage());
             }
         }
     }
 }
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -158,11 +164,10 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link rel="stylesheet" href="css/add_product.css">
-
 </head>
 <body>
 <div class="container">
-<div class="sidebar">
+    <div class="sidebar">
         <h2>Admin Panel</h2>
         <ul>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
@@ -176,69 +181,81 @@ $conn->close();
             <a href="logout.php">Logout</a>
         </div>
     </div>
-    <h2>Add New Product</h2>
-    <?php echo $message; ?>
-    <form action="" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="name" class="required">Product Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter product name" required 
-                   value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>">
-        </div>
-        
-        <div class="form-group">
-            <label for="description">Product Description</label>
-            <textarea id="description" name="description" placeholder="Enter product description"><?php echo isset($description) ? htmlspecialchars($description) : ''; ?></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="category" class="required">Category</label>
-            <select id="category" name="category" required>
-                <option value="">Select Category</option>
-                <?php
-                // Fetch categories dynamically
-                $conn = new mysqli("localhost", "root", "", "musicstore_database");
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-                $category_query = "SELECT category_id, category_name FROM categories";
-                $result = $conn->query($category_query);
-                
-                if ($result && $result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $selected = (isset($category_ref) && $category_ref == $row['category_id']) ? 'selected' : '';
-                        echo "<option value='{$row['category_id']}' {$selected}>{$row['category_name']}</option>";
+    
+    <div class="content">
+        <h2>Add New Product</h2>
+        <?php echo $message; ?>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name" class="required">Product Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter product name" required 
+                       value="<?php echo isset($name) ? htmlspecialchars($name) : ''; ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Product Description</label>
+                <textarea id="description" name="description" placeholder="Enter product description"><?php echo isset($description) ? htmlspecialchars($description) : ''; ?></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="category" class="required">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <?php
+                    // Fetch categories dynamically
+                    $category_query = "SELECT category_id, category_name FROM categories";
+                    $result = $conn->query($category_query);
+                    
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $selected = (isset($category_ref) && $category_ref == $row['category_id']) ? 'selected' : '';
+                            echo "<option value='{$row['category_id']}' {$selected}>{$row['category_name']}</option>";
+                        }
+                    } else {
+                        echo "<option value=''>Error loading categories</option>";
                     }
-                } else {
-                    echo "<option value=''>Error loading categories</option>";
-                }
-                $conn->close();
-                ?>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="price" class="required">Purchase Price</label>
-            <input type="number" id="price" step="0.01" name="price" placeholder="Enter price" required min="0.01"
-                   value="<?php echo isset($price) && $price > 0 ? htmlspecialchars($price) : ''; ?>">
-        </div>
-        
-        <div class="form-group">
-            <label for="stock_quantity">Stock Quantity</label>
-            <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Enter stock quantity" min="0"
-                   value="<?php echo isset($stock_quantity) ? htmlspecialchars($stock_quantity) : '0'; ?>">
-        </div>
-        
-        <div class="form-group">
-            <label for="image" class="required">Product Image</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
-            <small>Allowed formats: JPG, PNG, GIF, WEBP, SVG. Max size: 5MB</small>
-        </div>
-        
-        <!-- Rental Options Section -->
-       
-        
-        <button type="submit">Add Product</button>
-    </form>
+                    ?>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="price" class="required">Purchase Price</label>
+                <input type="number" id="price" step="0.01" name="price" placeholder="Enter price" required min="0.01"
+                       value="<?php echo isset($price) && $price > 0 ? htmlspecialchars($price) : ''; ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="stock_quantity">Stock Quantity</label>
+                <input type="number" id="stock_quantity" name="stock_quantity" placeholder="Enter stock quantity" min="0"
+                       value="<?php echo isset($stock_quantity) ? htmlspecialchars($stock_quantity) : '0'; ?>">
+            </div>
+            
+            <div class="form-group">
+                <label for="image" class="required">Product Image</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+                <small>Allowed formats: JPG, PNG, GIF, WEBP, SVG. Max size: 5MB</small>
+            </div>
+            
+            <!-- Rental Options Section -->
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="is_rentable" name="is_rentable" <?php echo isset($is_rentable) && $is_rentable ? 'checked' : ''; ?>>
+                <label for="is_rentable">This product is available for rent</label>
+            </div>
+            
+            <div id="rental-options" style="display: <?php echo isset($is_rentable) && $is_rentable ? 'block' : 'none'; ?>;">
+                <div class="form-group">
+                    <label for="rental_cost" id="rental_cost_label" <?php echo isset($is_rentable) && $is_rentable ? 'class="required"' : ''; ?>>
+                        Rental Cost (per day)
+                    </label>
+                    <input type="number" id="rental_cost" step="0.01" name="rental_cost" placeholder="Enter rental cost" min="0.01"
+                           value="<?php echo isset($rental_cost) && $rental_cost > 0 ? htmlspecialchars($rental_cost) : ''; ?>"
+                           <?php echo isset($is_rentable) && $is_rentable ? 'required' : ''; ?>>
+                </div>
+            </div>
+            
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
 </div>
 
 <script>

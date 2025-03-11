@@ -71,6 +71,22 @@ $relatedResult = $relatedStmt->get_result();
 
 // Count total items in cart
 $totalItems = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
+
+// Function to handle product image display
+function getProductImageSrc($product) {
+    // If product_image is a file path (similar to profile.php approach)
+    if (isset($product['product_image']) && !empty($product['product_image']) && strpos($product['product_image'], '/') !== false) {
+        return htmlspecialchars($product['product_image']);
+    }
+    // If product_image is binary data stored in DB
+    else if (isset($product['product_image']) && !empty($product['product_image'])) {
+        return 'data:' . $product['image_type'] . ';base64,' . base64_encode($product['product_image']);
+    }
+    // Default placeholder
+    else {
+        return 'assets/img/product-placeholder.jpg';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -109,22 +125,14 @@ $totalItems = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
                 <!-- Product Gallery -->
                 <div class="product-gallery">
                     <div class="product-main-image" id="main-image">
-                        <?php if ($product['product_image']): ?>
-                            <img src="data:<?php echo $product['image_type']; ?>;base64,<?php echo base64_encode($product['product_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
-                        <?php else: ?>
-                            <img src="assets/img/product-placeholder.jpg" alt="No image available">
-                        <?php endif; ?>
+                        <img src="<?php echo getProductImageSrc($product); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
                     </div>
                     
                     <div class="product-thumbnails">
                         <!-- For now, just show the same image in thumbnails -->
                         <!-- In a real implementation, you would loop through multiple product images -->
                         <div class="product-thumbnail active">
-                            <?php if ($product['product_image']): ?>
-                                <img src="data:<?php echo $product['image_type']; ?>;base64,<?php echo base64_encode($product['product_image']); ?>" alt="Thumbnail">
-                            <?php else: ?>
-                                <img src="assets/img/product-placeholder.jpg" alt="No image available">
-                            <?php endif; ?>
+                            <img src="<?php echo getProductImageSrc($product); ?>" alt="Thumbnail">
                         </div>
                         <!-- Add more thumbnails here if you have multiple images -->
                     </div>
@@ -138,7 +146,7 @@ $totalItems = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
                     
                     <div class="product-price-container">
                         <span class="product-price">$<?php echo number_format($product['product_price'], 2); ?></span>
-                        <?php if ($product['rental_cost']): ?>
+                        <?php if (isset($product['rental_cost']) && $product['rental_cost']): ?>
                             <span class="product-rental">Rental: $<?php echo number_format($product['rental_cost'], 2); ?>/day</span>
                         <?php endif; ?>
                     </div>
@@ -216,11 +224,7 @@ $totalItems = isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0;
                     <?php while ($related = $relatedResult->fetch_assoc()): ?>
                     <div class="related-card">
                         <div class="related-image">
-                            <?php if ($related['product_image']): ?>
-                                <img src="data:<?php echo $related['image_type']; ?>;base64,<?php echo base64_encode($related['product_image']); ?>" alt="<?php echo htmlspecialchars($related['product_name']); ?>">
-                            <?php else: ?>
-                                <img src="assets/img/product-placeholder.jpg" alt="No image available">
-                            <?php endif; ?>
+                            <img src="<?php echo getProductImageSrc($related); ?>" alt="<?php echo htmlspecialchars($related['product_name']); ?>">
                         </div>
                         <div class="related-info">
                             <h3 class="related-name"><?php echo htmlspecialchars($related['product_name']); ?></h3>

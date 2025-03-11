@@ -208,6 +208,9 @@ $productCount = $result->num_rows;
                     <a href="contact.php">
                         <li>Contact Us</li>
                     </a>
+                     <a href="chatbot.html">
+                      <li>Recommendation</li>
+                    </a>
                     <?php if (!isset($_SESSION['user_id'])): ?>
                         <a href="sign-in.php">
                             <li>Sign In</li>
@@ -249,7 +252,8 @@ $productCount = $result->num_rows;
             </div>
         </div>
     </div>
-    <!-- Main Content -->
+   <!--Main Content -->
+   
     <div class="main-content">
 
         <div class="container">
@@ -435,7 +439,16 @@ $productCount = $result->num_rows;
                                 <div class="product-image">
                                     <a href="product_detail.php?id=<?php echo $product['product_id']; ?>">
                                         <?php if ($product['product_image']): ?>
-                                            <img src="data:<?php echo $product['image_type']; ?>;base64,<?php echo base64_encode($product['product_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                                            <?php 
+                                            // Check if the product_image is a file path (starts with 'uploads/')
+                                            if (strpos($product['product_image'], 'uploads/') === 0) {
+                                                // It's a file path, display the image using the path
+                                                echo '<img src="' . htmlspecialchars($product['product_image']) . '" alt="' . htmlspecialchars($product['product_name']) . '">';
+                                            } else {
+                                                // It's a BLOB, use base64 encoding (for backward compatibility)
+                                                echo '<img src="data:' . $product['image_type'] . ';base64,' . base64_encode($product['product_image']) . '" alt="' . htmlspecialchars($product['product_name']) . '">';
+                                            }
+                                            ?>
                                         <?php else: ?>
                                             <img src="assets/img/product-placeholder.jpg" alt="No image available">
                                         <?php endif; ?>
@@ -455,7 +468,7 @@ $productCount = $result->num_rows;
                                         <?php endif; ?>
                                     </div>
                                     <div class="product-actions">
-                                        <button class="add-to-cart-btn" data-id="<?php echo $product['product_id']; ?>" <?php echo $product['stock_quantity'] <= 0 ?: ''; ?>>
+                                        <button class="add-to-cart-btn" data-id="<?php echo $product['product_id']; ?>" <?php echo $product['stock_quantity'] <= 0 ? 'disabled' : ''; ?>>
                                             <i class="fas fa-shopping-cart"></i> Add to Cart
                                         </button>
                                         <a href="product_detail.php?id=<?php echo $product['product_id']; ?>" class="view-details">
@@ -639,6 +652,29 @@ $productCount = $result->num_rows;
                     });
             });
         });
+        document.addEventListener('DOMContentLoaded', function() {
+  const menuToggle = document.querySelector('.menu-toggle');
+  
+  // If there's no menu toggle button in the HTML, create one
+  if (!menuToggle) {
+    const nav1 = document.querySelector('.nav1');
+    const newMenuToggle = document.createElement('button');
+    newMenuToggle.className = 'menu-toggle';
+    newMenuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    nav1.prepend(newMenuToggle);
+    
+    // Add event listener to the newly created button
+    newMenuToggle.addEventListener('click', toggleMenu);
+  } else {
+    // Add event listener to existing button
+    menuToggle.addEventListener('click', toggleMenu);
+  }
+  
+  function toggleMenu() {
+    const navItems = document.getElementById('nav-item');
+    navItems.classList.toggle('active');
+  }
+});
     </script>
 </body>
 

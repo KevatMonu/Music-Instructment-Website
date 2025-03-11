@@ -80,7 +80,7 @@ $conn->close();
             </div>
 
             <div class="dashboard-cards">
-                <div class="dashboard-card card-orders">
+                <a href="user_order_detail.php" class="dashboard-card card-orders">
                     <div class="card-content">
                         <div class="card-info">
                             <h3>Total Orders</h3>
@@ -88,9 +88,9 @@ $conn->close();
                         </div>
                         <div class="card-icon"><i class="lucide-package-check"></i></div>
                     </div>
-                </div>
+                </a>
 
-                <div class="dashboard-card card-cart">
+                <a href="cart.php" class="dashboard-card card-cart">
                     <div class="card-content">
                         <div class="card-info">
                             <h3>Cart Items</h3>
@@ -98,7 +98,7 @@ $conn->close();
                         </div>
                         <div class="card-icon"><i class="lucide-shopping-cart"></i></div>
                     </div>
-                </div>
+                </a>
             </div>
         </main>
     </div>
