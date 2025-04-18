@@ -169,41 +169,6 @@ function selliconup() {
 
 // Target date (YYYY-MM-DD HH:MM:SS format)
 
-function updateCountdown() {
-  const targetDate = new Date("2025-12-31T23:59:59");
-  const now = new Date();
-  const diffTime = targetDate - now;
-
-  if (diffTime > 0) {
-    // Calculate time components
-    const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diffTime % (1000 * 60)) / 1000);
-
-    // Update the DOM elements
-    document.getElementById("days").textContent = days
-      .toString()
-      .padStart(2, "0");
-    document.getElementById("hours").textContent = hours
-      .toString()
-      .padStart(2, "0");
-    document.getElementById("minutes").textContent = minutes
-      .toString()
-      .padStart(2, "0");
-    document.getElementById("seconds").textContent = seconds
-      .toString()
-      .padStart(2, "0");
-  } else {
-    // When the target date has passed
-    document.querySelector(".counter").innerHTML =
-      "<p>The target date has passed!</p>";
-    clearInterval(timerInterval); // Stop the interval
-  }
-  const timerInterval = setInterval(updateCountdown, 1000);
-}
 
 function productroll(){
   var carousel = new Swiper(".myCarousel", {
@@ -264,5 +229,5 @@ selliconup();
 productswiper();
 down();
 downlast();
-updateCountdown();
+
 

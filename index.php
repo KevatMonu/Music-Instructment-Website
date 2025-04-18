@@ -328,7 +328,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             <div class="sell-icon">
               <a href="products.php"><i class="ri-shopping-bag-4-line"></i></a>
 
-              <i class="ri-heart-line"></i>
+          
             </div>
           </div>
 
@@ -398,34 +398,14 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
 
   <div id="banner">
     <div class="banner-container">
-      <div class="banner-text">
-        <h1>Sale event</h1>
-        <h3>Save on all selling and exclusive styles</h3>
-      </div>
-
-      <div class="counter">
-        <div class="time-unit">
-          <div class="circle" id="days">--</div>
-          <div class="label">Days</div>
+            <h1 class="banner-heading">K&P Music</h1>
+            <h2 class="banner-subheading">Discover Premium Musical Instruments for Every Passion</h2>
+            <p class="banner-tagline">Where musicians find their perfect sound since 1985</p>
+            
+            <div class="promo-banner">
+                Spring Sale! Up to <span class="highlight">50% OFF</span> on premium instruments
+            </div>
         </div>
-        <div class="time-unit">
-          <div class="circle" id="hours">--</div>
-          <div class="label">Hours</div>
-        </div>
-        <div class="time-unit">
-          <div class="circle" id="minutes">--</div>
-          <div class="label">Mins</div>
-        </div>
-        <div class="time-unit">
-          <div class="circle" id="seconds">--</div>
-          <div class="label">Secs</div>
-        </div>
-      </div>
-
-      <div class="banner-btn ">
-        <button class="button">Buy Now !</button>
-      </div>
-    </div>
   </div>
 
   <div id="page3">

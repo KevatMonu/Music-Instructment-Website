@@ -3,166 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Store - Sign In</title>
+    <title>Music Instrument Shop</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <style>
-        @font-face {
-            font-family: "Bold";
-            src: url(../assets/font/Bebas_Neue/BebasNeue-Regular.ttf);
-        }
-        
-        @font-face {
-            font-family: "font";
-            src: url(../assets/font/Roboto_Condensed/RobotoCondensed-Regular.ttf);
-        }
-
         * {
             margin: 0;
             padding: 0;
-            font-family: "font";
             box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
         
-        html,
         body {
-            width: 100%;
-            height: 100%;
-            will-change: auto;
-        }
-
-        .sign-in-form-container {
-            width: 100%;
-            min-height: 70vh;
-            position: relative;
-            text-align: center;
-        }
-
-        #sign-in {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            gap: 1vw;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            justify-content: space-between;
-            gap: 0.2vw;
-            position: relative;
-            margin-bottom: 1vw;
-        }
-
-        .form-group input {
-            width: 41.3vw;
-            height: 3vw;
-            border-radius: 0.5vw;
-            font-size: 1vw;
-            padding: 0.2vw 1vw;
-        }
-
-        .form-group .eye-icon {
-            position: absolute;
-            right: 1vw;
-            top: 75%;
-            transform: translateY(-75%);
-            cursor: pointer;
-            color: #888;
-            font-size: 18px;
-        }
-
-        .form-group .eye-icon:hover {
-            color: #333;
-        }
-
-        .sign-up-btn button {
-            width: 41.3vw;
-            height: 3.2vw;
-            border-radius: 0.5vw;
-            font-size: 1.2vw;
-            padding: 0.2vw 1vw;
-            text-transform: uppercase;
-            transition: all ease-in-out 0.3s;
-        }
-
-        .sign-up-btn button:hover {
-            background-color: #000;
+            background-color: #111;
             color: #fff;
         }
-
-        .form-last {
+        
+        #banner {
+            width: 100%;
+            height: 75vh;
+            margin: 3vw 0 0 0;
+            background: url(../assets/home/product-img/banner.webp);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .banner-container {
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 14vw;
+            position: relative;
+            z-index: 3;
+            padding: 20px;
+            text-align: center;
         }
-
-        .redirect p {
-            font-size: 1.3vw;
+        
+        .banner-heading {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            opacity: 0;
         }
-
-        .redirect > p > a {
-            padding-left: 0.4vw;
+        
+        .banner-subheading {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            opacity: 0;
         }
-
-        .forgot-pass a, .redirect > p > a {
-            font-size: 1.3vw;
-            text-decoration: none;
+        
+        .banner-tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #ff9500;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            opacity: 0;
         }
-
-        .redirect > p > a:hover, .forgot-pass a:hover {
-            color: red;
+        
+        #banner::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to top, #000 10%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.3) 85%);
+        }
+        
+        .promo-banner {
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            color: #f8f8f8;
+            background: linear-gradient(90deg, rgba(25,25,25,0.8) 0%, rgba(40,40,40,0.8) 50%, rgba(25,25,25,0.8) 100%);
+            border-top: 1px solid rgba(255, 115, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 115, 0, 0.3);
+            position: relative;
+            opacity: 0;
+            margin: 0;
+        }
+        
+        .highlight {
+            color: #ff7300;
+            font-weight: bold;
+        }
+        
+        .cta-section {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 30px 20px;
+        }
+        
+        .cta-button {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .buy-button {
+            background: linear-gradient(45deg, #ff7300, #ff9500);
+            color: white;
+        }
+        
+        .sell-button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 60%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
         }
     </style>
 </head>
 <body>
-    <div class="sign-in-form-container">
-        <div id="sign-in">
-            <div class="form-title">
-                <h1>Sign In</h1>
-                <p>Enter your credentials to access your account</p>
-            </div>
-
-            <form action="sign-in.php" method="POST">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                    <span class="eye-icon" onclick="togglePasswordVisibility()">👁️</span>
-                </div>
-
-                <div class="sign-up-btn">
-                    <button type="submit">Sign In</button>
-                </div>
-            </form>
-
-            <div class="form-last redirect">
-                <p>Don't have an account? <a href="sign-up.php">Register</a></p>
-                <div class="forgot-pass">
-                    <a href="forgot-password.php">Forgot Password?</a>
-                </div>
+    <div id="banner">
+        <div class="banner-container">
+            <h1 class="banner-heading">Melody Masters</h1>
+            <h2 class="banner-subheading">Discover Premium Musical Instruments for Every Passion</h2>
+            <p class="banner-tagline">Where musicians find their perfect sound since 1985</p>
+            <div class="promo-banner">
+                Spring Sale! Up to <span class="highlight">50% OFF</span> on premium instruments
             </div>
         </div>
-    </div>
 
+    </div>
+    
+    
+    
+    <div class="cta-section">
+        <button class="cta-button buy-button">Buy Instruments</button>
+        <button class="cta-button sell-button">Sell Your Gear</button>
+    </div>
+    
     <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-            } else {
-                passwordInput.type = 'password';
-            }
-        }
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate the banner text
+            gsap.to(".banner-heading", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                delay: 0.3
+            });
+            
+            gsap.to(".banner-subheading", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                delay: 0.8
+            });
+            
+            gsap.to(".banner-tagline", {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                delay: 1.3
+            });
+            
+            // Animate the promo banner
+            gsap.to(".promo-banner", {
+                duration: 1.5,
+                opacity: 1,
+                delay: 1.8,
+                ease: "power2.out"
+            });
+            
+            // Add shine effect to promo banner
+            gsap.to(".promo-banner", {
+                backgroundPosition: "200% center",
+                duration: 10,
+                repeat: -1,
+                ease: "linear"
+            });
+            
+            // Animate the buttons
+            gsap.from(".buy-button", {
+                duration: 1,
+                x: -100,
+                opacity: 0,
+                ease: "power2.out",
+                delay: 2.3
+            });
+            
+            gsap.from(".sell-button", {
+                duration: 1,
+                x: 100,
+                opacity: 0,
+                ease: "power2.out",
+                delay: 2.3
+            });
+            
+            // Add shine effect animation for buttons
+            const buttons = document.querySelectorAll('.cta-button');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    gsap.to(button, {
+                        scale: 1.05,
+                        duration: 0.3
+                    });
+                    
+                    gsap.to(button.querySelector('::before') || button, {
+                        left: '100%',
+                        duration: 0.6,
+                        ease: "power2.inOut"
+                    });
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    gsap.to(button, {
+                        scale: 1,
+                        duration: 0.3
+                    });
+                });
+            });
+            
+            // Add pulsing animation to the highlight text
+            gsap.to(".highlight", {
+                scale: 1.1,
+                duration: 0.8,
+                repeat: -1,
+                yoyo: true,
+                ease: "power1.inOut"
+            });
+        });
     </script>
 </body>
 </html>
