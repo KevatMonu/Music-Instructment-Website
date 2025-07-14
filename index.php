@@ -67,6 +67,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>K&P Music Instrument Store</title>
   <link rel="stylesheet" href="./css/style.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="css/responsive.css?v=<?php echo time(); ?>">
   <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
     rel="stylesheet" />
@@ -120,15 +121,19 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
     </div>
     <div class="nav2">
       <div class="nav2-icon">
+    
         <a href="cart.php" class="cart-link">
+          
           <i class="fa-solid fa-cart-shopping"></i>
           <?php if ($totalItems > 0): ?>
             <span class="cart-count"><?php echo $totalItems; ?></span>
           <?php endif; ?>
         </a>
         <a href="user_dashboard.php"><i class="fa-solid fa-user"></i></a>
+      
       </div>
     </div>
+    
   </div>
 
   <div class="main">
@@ -235,7 +240,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
       <div class="best-sell">
         <h1>best seller</h1>
         <div class="seller-list">
-          <div class="sell-item">
+          <div class="sell-item s1">
             <div class="sell-img">
               <img src="assets/home/products/18-Pipes-Pan-Flute-F-Key-1.webp" alt="Piano" />
               <img id="hover" src="assets/home/products/hover-18-Pipes-Pan-Flute-F-Key-2.webp" alt="" />
@@ -250,7 +255,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
 
 
 
-          <div class="sell-item">
+          <div class="sell-item s2">
             <div class="sell-img">
               <img
                 src="assets/home/products/Jaguar-Electric-Guitar.webp"
@@ -269,7 +274,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
           </div>
 
-          <div class="sell-item">
+          <div class="sell-item s3">
             <div class="sell-img">
               <img
                 src="assets/home/products/Weighted-Action-Key-Digital-Piano-2.webp"
@@ -290,7 +295,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
           </div>
 
-          <div class="sell-item">
+          <div class="sell-item s4">
             <div class="sell-img">
               <img
                 src="assets/home/products/Affordable-Home-Piano.webp"
@@ -311,7 +316,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
           </div>
 
-          <div class="sell-item">
+          <div class="sell-item s5">
             <div class="sell-img">
               <img
                 src="assets/home/products/AS-400-Alto-Saxophone.webp"
@@ -332,7 +337,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
           </div>
 
-          <div class="sell-item">
+          <div class="sell-item s6">
             <div class="sell-img">
               <img
                 src="assets/home/products/Beginner-Classical-Guitar-2.webp"
@@ -353,7 +358,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
           </div>
 
-          <div class="sell-item">
+          <div class="sell-item s7">
             <div class="sell-img">
               <img
                 src="assets/home/products/Vertical-Bamboo-Flute.webp"
@@ -373,7 +378,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
             </div>
           </div>
 
-          <div class="sell-item">
+          <div class="sell-item s8x">
             <div class="sell-img">
               <img
                 src="assets/home/products/Western-Cutaway-Style-with-6-Strings-1.webp"
@@ -399,7 +404,7 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
   <div id="banner">
     <div class="banner-container">
             <h1 class="banner-heading">K&P Music</h1>
-            <h2 class="banner-subheading">Discover Premium Musical Instruments for Every Passion</h2>
+            <h2 class="banner-subheading">Discover Premium Musical <br> Instruments for Every Passion</h2>
             <p class="banner-tagline">Where musicians find their perfect sound since 1985</p>
             
             <div class="promo-banner">
@@ -659,6 +664,19 @@ $totalItems = array_sum($_SESSION['cart'] ?? []);
         navItems.classList.toggle('active');
       });
     });
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navItem = document.querySelector('#nav-item');
+    
+    if (menuToggle) {
+      menuToggle.addEventListener('click', function() {
+        navItem.classList.toggle('show');
+      });
+    }
+  });
   </script>
 </body>
 
